@@ -10,11 +10,10 @@ RUN  echo "deb http://packages.elasticsearch.org/logstash/${LOGSTASH_MAJOR}/debi
 RUN  apt-get update && apt-get -y upgrade && \
      apt-get install -y --no-install-recommends logstash=$LOGSTASH_VERSION && \
      apt-get install -y redis-server redis-tools && \
-     apt-get install -y wget && \
      apt-get install -y python-dev && \
      apt-get install -y collectd && \
      apt-get clean && apt-get autoremove && \
-     rm -rf /var/lib/apt/* /var/lib/dpkg/*-old /var/lib/dpkg/info/* /var/lib/cache/* /var/lib/log/* /tmp/* /var/tmp/*
+     rm -rf /var/lib/cache/* /var/lib/log/* /tmp/* /var/tmp/*
 
 #confd our
 ADD  docker/confd /etc/confd

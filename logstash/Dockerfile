@@ -10,7 +10,7 @@ RUN  echo "deb http://packages.elasticsearch.org/logstash/${LOGSTASH_MAJOR}/debi
 RUN  apt-get update && apt-get -y upgrade && \
 	 apt-get install -y --no-install-recommends logstash=$LOGSTASH_VERSION && \
      apt-get clean && apt-get autoremove && \
-     rm -rf /var/lib/apt/* /var/lib/dpkg/*-old /var/lib/dpkg/info/* /var/lib/cache/* /var/lib/log/* /tmp/* /var/tmp/*
+     rm -rf /var/lib/cache/* /var/lib/log/* /tmp/* /var/tmp/*
 
 ADD  docker/logstash /etc/logstash
 

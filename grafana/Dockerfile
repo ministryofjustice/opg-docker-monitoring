@@ -7,7 +7,7 @@ RUN echo "deb https://packagecloud.io/grafana/stable/debian/ wheezy main" > /etc
 RUN  apt-get update && apt-get -y upgrade && \
      apt-get install -y grafana && \
      apt-get clean && apt-get autoremove && \
-     rm -rf /var/lib/apt/* /var/lib/dpkg/*-old /var/lib/dpkg/info/* /var/lib/cache/* /var/lib/log/* /tmp/* /var/tmp/*
+     rm -rf /var/lib/cache/* /var/lib/log/* /tmp/* /var/tmp/*
 
 
 VOLUME ["/var/lib/grafana"]

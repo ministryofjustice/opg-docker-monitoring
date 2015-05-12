@@ -1,0 +1,105 @@
+kibana:
+  image: marcbachmann/kibana4:latest
+  environment:
+    ELASTICSEARCH: http://elasticsearch:9200
+  ports:
+    - 8001:5601
+  links:
+    - elasticsearch
+
+
+# data on volume
+elasticsearch:
+  image: elasticsearch:latest
+  ports:
+    - 9200:9200
+    - 9300:9300
+
+
+# user/pass: admin/admin
+grafana:
+  build: grafana
+  ports:
+    - 8002:3000
+  links:
+    - graphite
+
+
+logstash:
+  build: logstash
+  links:
+    - redis
+    - elasticsearch
+    - graphite
+
+
+redis:
+  image: redis:latest
+  ports:
+    - 6379:6379
+
+
+# data on volume
+graphite:
+  build: graphite-statsd
+  ports:
+    - 8003:80
+    - 2003:2003
+    - 2003:2003/udp
+    - 8125:8125/udp
+
+
+#rabbitmq:
+#  image: rabbitmq:latest
+#  ports:
+#    - 5672:5672
+#
+#
+#uchiwa:
+#  image: uchiwa/uchiwa:latest
+#  links:
+#    - sensuapi
+#    - sensuserver
+#  ports:
+#    - 8004:3000
+#
+#
+#sensuserver:
+#  image: arypurnomoz/sensu-server:latest
+#  links:
+#    - redis
+#    - rabbitmq
+#
+#
+#sensuapi:
+#  image: arypurnomoz/sensu-api:latest
+#  links:
+#    - redis
+#    - rabbitmq
+
+
+monitoringproxy:
+  build: monitoring-proxy
+  links:
+    - redis
+    - graphite
+  environment:
+    MONITORING_REDIS_HOST: redis:6379/0
+    MONITORING_GRAPHITE: graphite
+    MONITORING_NAMESPACE: myapp.prod
+
+
+# example app feeding to the monitoring stack
+app:
+  image: registry.service.dsd.io/opguk/nginx:latest
+  links:
+    - monitoringproxy:monitoring
+  ports:
+    - 8000:80
+
+
+#example collectd feeder
+collectd:
+  build: collectd
+  links:
+    - monitoringproxy:monitoring

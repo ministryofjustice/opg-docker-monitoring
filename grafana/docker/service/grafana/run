@@ -1,0 +1,5 @@
+#!/bin/sh
+
+cd /usr/share/grafana
+
+exec /sbin/setuser grafana /usr/sbin/grafana-server --config /etc/grafana/grafana.ini

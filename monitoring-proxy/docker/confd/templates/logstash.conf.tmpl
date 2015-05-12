@@ -1,0 +1,57 @@
+# 100_input_syslog
+input {
+    tcp {
+        port => 2514
+        type => syslog
+    }
+    udp {
+        port => 2514
+        type => syslog
+    }
+}
+
+
+# 101_input_redis
+input {
+    redis {
+        host => 'localhost'
+        data_type => 'list'
+        key => 'logstash'
+        type => 'logstash'
+    }
+}
+
+
+# 200_filter_all
+filter {
+  # This is fugly, but uuid{} is problematic:
+  #   * hangs our tests for 2+ mins while SecureRandom finds entropy (probably)
+  #   * is causing tests to fail due to encoding as ASCII
+  # So, until this is fixed, use a quick ruby hack to generate a reasonably random UUID.
+  ruby {
+    code => "event['@logstash_uuid'] = sprintf('%.8x-%.4x-%.4x-%.4x-%.12x', rand(16**8), rand(16**4), rand(16**4), rand(16**4), rand(16**12)) unless event['@logstash_uuid']"
+  }
+}
+
+
+{{if exists "/namespace"}}
+filter {
+  mutate {
+    add_field => {
+      "namespace" => '{{getv "/namespace"}}'
+    }
+  }
+}
+{{end}}
+
+
+output {
+    redis {
+        host => '{{getv "/redis/host"}}'
+        {{if exists "/redis/db"}}
+        db => {{getv "/redis/db"}}
+        {{end}}
+        data_type => 'list'
+        key => 'logstash'
+    }
+}

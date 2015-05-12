@@ -1,0 +1,8 @@
+[template]
+prefix = "/monitoring"
+src = "bucky.conf.tmpl"
+dest = "/etc/bucky/bucky.conf"
+keys = [
+    "/namespace",
+    "/graphite",
+]

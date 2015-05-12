@@ -1,0 +1,8 @@
+[template]
+prefix = "/monitoring"
+src = "logstash.conf.tmpl"
+dest = "/etc/logstash/logstash.conf"
+keys = [
+    "/redis",
+    "/namespace",
+]

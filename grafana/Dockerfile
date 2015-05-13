@@ -19,8 +19,6 @@ WORKDIR /usr/share/grafana
 ADD  docker/service/grafana /etc/service/grafana
 RUN  chmod a+x /etc/service/grafana/run
 
-ADD  docker/beaver.d /etc/beaver.d
-
 ADD  docker/grafana /usr/share/grafana
 RUN  chown -R grafana:grafana /usr/share/grafana/
 

@@ -110,9 +110,9 @@ graphite_pickle_buffer_size = 500
 #
 # Prefix and postfix allow to tag all values with some value.
 {{if exists "/namespace"}}
-name_prefix = "{{getv "/namespace"}}"
+name_prefix = "ns.{{getv "/namespace"}}"
 {{else}}
-name_prefix = None
+name_prefix = "ns.default"
 {{end}}
 
 name_postfix = None

@@ -46,6 +46,7 @@ VOLUME /data
 
 #syslog
 EXPOSE 2514
+EXPOSE 2514/udp
 
 #statsd
 EXPOSE 8125/udp

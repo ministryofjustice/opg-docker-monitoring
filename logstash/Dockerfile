@@ -17,3 +17,6 @@ ADD  docker/logstash /etc/logstash
 ADD  docker/service/logstash /etc/service/logstash
 RUN  chmod a+x /etc/service/logstash/run
 
+#syslog input out of namespace
+EXPOSE 2514
+EXPOSE 2514/udp

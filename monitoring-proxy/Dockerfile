@@ -34,9 +34,6 @@ RUN  mkdir -p /var/log/redis && chown -R redis /var/log/redis
 ADD  docker/service/logstash /etc/service/logstash
 RUN  chmod a+x /etc/service/logstash/run
 
-ADD  docker/my_init.d /etc/my_init.d
-RUN  chmod a+x /etc/my_init.d/*
-
 RUN  useradd bucky
 RUN  mkdir -p /var/lib/bucky && chown -R bucky:bucky /var/lib/bucky
 

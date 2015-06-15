@@ -49,33 +49,33 @@ graphite:
     - 8125:8125/udp
 
 
-#rabbitmq:
-#  image: rabbitmq:latest
-#  ports:
-#    - 5672:5672
-#
-#
-#uchiwa:
-#  image: uchiwa/uchiwa:latest
-#  links:
-#    - sensuapi
-#    - sensuserver
-#  ports:
-#    - 8004:3000
-#
-#
-#sensuserver:
-#  image: arypurnomoz/sensu-server:latest
-#  links:
-#    - redis
-#    - rabbitmq
-#
-#
-#sensuapi:
-#  image: arypurnomoz/sensu-api:latest
-#  links:
-#    - redis
-#    - rabbitmq
+rabbitmq:
+  image: rabbitmq:latest
+  ports:
+    - 5672:5672
+
+
+uchiwa:
+  image: uchiwa/uchiwa:latest
+  links:
+    - sensuapi
+    - sensuserver
+  ports:
+    - 8004:3000
+
+
+sensuserver:
+  image: arypurnomoz/sensu-server:latest
+  links:
+    - redis
+    - rabbitmq
+
+
+sensuapi:
+  image: arypurnomoz/sensu-api:latest
+  links:
+    - redis
+    - rabbitmq
 
 
 monitoringproxy:

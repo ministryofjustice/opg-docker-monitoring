@@ -6,6 +6,7 @@ kibana:
     - 8001:5601
   links:
     - elasticsearch
+  env_file: ./env
 
 
 # data on volume
@@ -23,6 +24,7 @@ grafana:
     - 8002:3000
   links:
     - graphite
+  env_file: ./env
 
 
 logstash:
@@ -31,12 +33,14 @@ logstash:
     - redis
     - elasticsearch
     - graphite
+  env_file: ./env
 
 
 redis:
   image: redis:latest
   ports:
     - 6379:6379
+  env_file: ./env
 
 
 # data on volume
@@ -47,35 +51,30 @@ graphite:
     - 2003:2003
     - 2003:2003/udp
     - 8125:8125/udp
+  env_file: ./env
 
 
-#rabbitmq:
-#  image: rabbitmq:latest
-#  ports:
-#    - 5672:5672
-#
-#
-#uchiwa:
-#  image: uchiwa/uchiwa:latest
-#  links:
-#    - sensuapi
-#    - sensuserver
-#  ports:
-#    - 8004:3000
-#
-#
-#sensuserver:
-#  image: arypurnomoz/sensu-server:latest
-#  links:
-#    - redis
-#    - rabbitmq
-#
-#
-#sensuapi:
-#  image: arypurnomoz/sensu-api:latest
-#  links:
-#    - redis
-#    - rabbitmq
+rabbitmq:
+  image: registry.service.dsd.io/opguk/rabbitmq:latest
+  ports:
+    - 5672:5672
+  env_file: ./env
+
+
+sensuserver:
+  image: registry.service.dsd.io/opguk/sensu-server:latest
+  links:
+    - redis
+    - rabbitmq
+  env_file: ./env
+
+
+sensuapi:
+  image: registry.service.dsd.io/opguk/sensu-api:latest
+  links:
+    - redis
+    - rabbitmq
+  env_file: ./env
 
 
 monitoringproxy:
@@ -87,6 +86,7 @@ monitoringproxy:
     MONITORING_REDIS_HOST: redis:6379/0
     MONITORING_GRAPHITE: graphite
     MONITORING_NAMESPACE: myapp.prod
+  env_file: ./env
 
 
 # example app feeding to the monitoring stack
@@ -96,6 +96,7 @@ app:
     - monitoringproxy:monitoring
   ports:
     - 8000:80
+  env_file: ./env
 
 
 #example collectd feeder
@@ -103,3 +104,4 @@ collectd:
   build: collectd
   links:
     - monitoringproxy:monitoring
+  env_file: ./env

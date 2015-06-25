@@ -1,0 +1,30 @@
+{{if exists "/sensu"}}
+filter {
+  mutate {
+    add_field => {
+      "sensu" => '{{getv "/sensu"}}'
+    }
+  }
+}
+{{end}}
+
+{
+  "api": {
+    "port": 4567,
+    "user": "{{getv "/api/user"}}",
+    "password": "{{getv "/api/password"}}",
+    "host": "0.0.0.0",
+    "bind": "0.0.0.0"
+  },
+  "redis": {
+    "host": "{{getv "/redis/host"}}",
+    "port": {{getv "/redis/port"}}
+  }, 
+  "rabbitmq": {
+    "host": "{{getv "/rabbitmq/host"}}",
+    "port": {{getv "/rabbitmq/port"}},
+    "vhost": "{{getv "/rabbitmq/vhost"}}",
+    "user": "{{getv "/rabbitmq/user"}}",
+    "password": "{{getv "/rabbitmq/password"}}"
+  }
+}

@@ -15,11 +15,12 @@ elasticsearch:
   ports:
     - 9200:9200
     - 9300:9300
+  env_file: ./env
 
 
 # user/pass: admin/admin
 grafana:
-  build: grafana
+  image: registry.service.dsd.io/opguk/grafana:latest
   ports:
     - 8002:3000
   links:
@@ -28,7 +29,7 @@ grafana:
 
 
 logstash:
-  build: logstash
+  image: registry.service.dsd.io/opguk/logstash:latest
   links:
     - redis
     - elasticsearch
@@ -45,7 +46,7 @@ redis:
 
 # data on volume
 graphite:
-  build: graphite-statsd
+  image: registry.service.dsd.io/opguk/graphite-statsd:latest
   ports:
     - 8003:80
     - 2003:2003
@@ -74,6 +75,16 @@ sensuapi:
   links:
     - redis
     - rabbitmq
+  env_file: ./env
+
+
+uchiwa:
+  image: registry.service.dsd.io/opguk/uchiwa:latest
+  links:
+    - sensuapi
+    - sensuserver
+  ports:
+    - 8004:3000
   env_file: ./env
 
 

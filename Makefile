@@ -14,6 +14,7 @@ build:
 	$(MAKE) -C sensu newtag=${newtag}
 	$(MAKE) -C sensu-api newtag=${newtag}
 	$(MAKE) -C sensu-server newtag=${newtag}
+	$(MAKE) -C uchiwa newtag=${newtag}
 
 push:
 	docker push registry.service.dsd.io/opguk/grafana:${currenttag}
@@ -30,6 +31,8 @@ push:
 	docker push registry.service.dsd.io/opguk/sensu-api:latest
 	docker push registry.service.dsd.io/opguk/sensu-server:${currenttag}
 	docker push registry.service.dsd.io/opguk/sensu-server:latest
+	docker push registry.service.dsd.io/opguk/uchiwa:${currenttag}
+	docker push registry.service.dsd.io/opguk/uchiwa:latest
 
 pull:
 	docker pull registry.service.dsd.io/opguk/grafana
@@ -39,3 +42,4 @@ pull:
 	docker pull registry.service.dsd.io/opguk/sensu
 	docker pull registry.service.dsd.io/opguk/sensu-api
 	docker pull registry.service.dsd.io/opguk/sensu-server
+	docker pull registry.service.dsd.io/opguk/uchiwa

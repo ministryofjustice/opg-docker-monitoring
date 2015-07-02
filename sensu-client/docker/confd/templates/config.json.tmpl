@@ -1,0 +1,16 @@
+{
+  "rabbitmq": {
+    "host": "{{getv "/sensu/rabbitmq/host"}}",
+    "port": {{getv "/sensu/rabbitmq/port"}},
+    "vhost": "{{getv "/sensu/rabbitmq/vhost"}}",
+    "user": "{{getv "/sensu/rabbitmq/user"}}",
+    "password": "{{getv "/sensu/rabbitmq/password"}}"
+  },
+  "client": {
+    "name": "{{getv "/sensu/client/name"}}",
+    "address": "127.0.0.1",
+    "subscriptions": [
+      "all"
+    ]
+  }
+}

@@ -1,6 +1,5 @@
 {
   "checks": {
-{{ if lsdir "/sensu/client/checks/role" }}
 {{ range lsdir "/sensu/client/checks/role" }}
     "{{ getv (printf "/sensu/client/checks/role/%s/name" .) }}": {
       "command": "{{ getv (printf "/sensu/client/checks/role/%s/command" .) }}",
@@ -10,7 +9,6 @@
       ],
       "interval": {{ getv (printf "/sensu/client/checks/role/%s/interval" .) }}
     },
-{{ end }}
 {{ end }}
     {
       “true": {

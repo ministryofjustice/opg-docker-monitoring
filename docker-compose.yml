@@ -83,7 +83,10 @@ sensuclient:
   links:
     - redis
     - rabbitmq
+    - graphite
   env_file: ./env
+  volumes:
+    - ./tmp:/etc/sensu/conf.d
 
 
 uchiwa:

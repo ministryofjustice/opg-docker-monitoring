@@ -1,0 +1,27 @@
+{
+  "checks": {
+{{ if lsdir "/sensu/client/checks/base" }}
+{{ range lsdir "/sensu/client/checks/base" }}
+    "{{ getv (printf "/sensu/client/checks/base/%s/name" .) }}": {
+      "command": "{{ getv (printf "/sensu/client/checks/base/%s/command" .) }}",
+      "standalone": true,
+      "subscribers": [
+        "{{ getv (printf "/sensu/client/checks/base/%s/subscribers" .) }}"
+      ],
+      "interval": {{ getv (printf "/sensu/client/checks/base/%s/interval" .) }}
+    },
+{{ end }}
+{{ end }}
+    {
+      “true": {
+        "command": “/bin/true",
+        "type": "standard"
+        "standalone": true,
+        "subscribers": [
+          "all"
+        ],
+        "interval": 600
+      }
+    }
+  }
+}

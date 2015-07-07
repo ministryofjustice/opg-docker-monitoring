@@ -7,6 +7,8 @@ ENV SENSU_RABBITMQ_VHOST /sensu
 ENV SENSU_RABBITMQ_USER sensu
 ENV SENSU_RABBITMQ_PASSWORD sensu
 
+ADD docker/sensu-client/plugins/* /etc/sensu/plugins/
+
 ADD docker/confd /etc/confd
 
 ADD docker/service/sensu-client /etc/service/sensu-client

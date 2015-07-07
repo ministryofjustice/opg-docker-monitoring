@@ -78,6 +78,17 @@ sensuapi:
   env_file: ./env
 
 
+sensuclient:
+  image: registry.service.dsd.io/opguk/sensu-client:latest
+  links:
+    - redis
+    - rabbitmq
+    - graphite
+  env_file: ./env
+  volumes:
+    - ./tmp:/etc/sensu/conf.d
+
+
 uchiwa:
   image: registry.service.dsd.io/opguk/uchiwa:latest
   links:

@@ -1,0 +1,6 @@
+[template]
+src = "checks_base.json.tmpl"
+dest = "/etc/sensu/conf.d/checks_base.json"
+keys = [
+    "/sensu/client/checks/base",
+]

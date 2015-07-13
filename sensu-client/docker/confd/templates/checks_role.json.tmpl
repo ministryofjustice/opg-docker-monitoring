@@ -4,22 +4,16 @@
     "{{ getv (printf "/sensu/client/checks/role/%s/name" .) }}": {
       "command": "{{ getv (printf "/sensu/client/checks/role/%s/command" .) }}",
       "standalone": true,
-      "subscribers": [
-        "{{ getv (printf "/sensu/client/checks/role/%s/subscribers" .) }}"
-      ],
+      "subscribers": [ "{{ getv (printf "/sensu/client/checks/role/%s/subscribers" .) }}" ],
       "interval": {{ getv (printf "/sensu/client/checks/role/%s/interval" .) }}
     },
 {{ end }}
-    {
-      "true": {
-        "command": "/bin/true",
-        "type": "standard"
-        "standalone": true,
-        "subscribers": [
-          "all"
-        ],
-        "interval": 600
-      }
+    "true": {
+      "command": "/bin/true",
+      "type": "standard",
+      "standalone": true,
+      "subscribers": [ "all" ],
+      "interval": 600
     }
   }
 }

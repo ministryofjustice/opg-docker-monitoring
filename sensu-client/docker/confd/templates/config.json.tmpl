@@ -8,6 +8,7 @@
   },
   "client": {
     "name": "{{getv "/sensu/client/name"}}",
+    "metric_prefix": "{{getv "/sensu/client/metric/prefix"}}",
     "address": "127.0.0.1",
     "subscriptions": [
       "all"

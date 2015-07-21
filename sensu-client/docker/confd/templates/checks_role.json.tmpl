@@ -8,12 +8,13 @@
       "interval": {{ getv (printf "/sensu/client/checks/role/%s/interval" .) }}
     },
 {{ end }}
-    "true": {
+    "role_true": {
       "command": "/bin/true",
       "type": "standard",
       "standalone": true,
       "subscribers": [ "all" ],
-      "interval": 600
+      "interval": 600,
+      "handle": "false"
     }
   }
 }

@@ -8,12 +8,13 @@
       "interval": 60
     },
 {{ end }}
-    "true": {
+    "base_true": {
       "command": "/bin/true",
       "type": "standard",
       "standalone": true,
       "subscribers": [ "all" ],
-      "interval": 600
+      "interval": 600,
+      "handle": "false"
     }
   }
 }

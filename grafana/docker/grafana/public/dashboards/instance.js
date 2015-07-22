@@ -209,7 +209,6 @@ function panel_collectd_loadavg(title, prefix) {
         } ]
     }
 }
-
 function panel_collectd_network_octets(title, prefix, intrf) {
     intrf = (typeof intrf === "undefined") ? 'eth0' : intrf;
     var idx = len(prefix);
@@ -257,7 +256,7 @@ function panel_collectd_network_packets(title, prefix, intrf) {
     }
 }
 function panel_collectd_df(title, prefix, vol) {
-    vol = (typeof vol === "undefined") ? 'df-root' : vol;
+    vol = (typeof vol === "undefined") ? 'root' : vol;
     var idx = len(prefix);
     return {
         title: title + ', ' + vol,
@@ -366,9 +365,10 @@ function row_network(title, prefix, filter) {
     }
 }
 function row_disk_space(title, prefix, filter) {
-    var volumes = ['srv','data','root'];
+    var volumes = find_filter_values(metric_filter + '.df.*');
     panels_disk_space = [];
     for (var i in volumes) {
+      if ( ! /root|srv|data/.test(volumes[i]) ) { continue; }
         panels_disk_space.push(panel_collectd_df('disk space', prefix, volumes[i]));
     }
     return {

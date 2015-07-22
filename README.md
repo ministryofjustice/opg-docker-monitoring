@@ -1,5 +1,3 @@
-An arbitrary set of preconfigured docker images, to quickly build your monitoring stack.
-=======
 opg-docker-monitoring
 =====================
 

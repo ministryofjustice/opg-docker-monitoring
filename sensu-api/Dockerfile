@@ -1,12 +1,10 @@
 FROM registry.service.dsd.io/opguk/sensu:latest
 
 ENV REDIS_PORT 6379
-
-ENV RABBITMQ_PORT 5671
+ENV RABBITMQ_PORT 5672
 ENV RABBITMQ_VHOST /sensu
 ENV RABBITMQ_USER sensu
 ENV RABBITMQ_PASS sensu
-
 ENV API_USER admin
 ENV API_PASS admin
 

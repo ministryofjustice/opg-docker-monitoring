@@ -3,7 +3,7 @@
 currenttag = $(shell semvertag latest)
 newtag = $(shell semvertag bump patch)
 
-containers = base nginx php-fpm monitoring sensu sensu-api sensu-server
+containers = base nginx php-fpm monitoring sensu sensu-api sensu-client sensu-server uchiwa
 
 build:
 	semvertag tag ${newtag}
@@ -13,6 +13,7 @@ build:
 	$(MAKE) -C monitoring-proxy newtag=${newtag}
 	$(MAKE) -C sensu newtag=${newtag}
 	$(MAKE) -C sensu-api newtag=${newtag}
+	$(MAKE) -C sensu-client newtag=${newtag}
 	$(MAKE) -C sensu-server newtag=${newtag}
 	$(MAKE) -C uchiwa newtag=${newtag}
 
@@ -29,6 +30,8 @@ push:
 	docker push registry.service.dsd.io/opguk/sensu:latest
 	docker push registry.service.dsd.io/opguk/sensu-api:${currenttag}
 	docker push registry.service.dsd.io/opguk/sensu-api:latest
+	docker push registry.service.dsd.io/opguk/sensu-client:${currenttag}
+	docker push registry.service.dsd.io/opguk/sensu-client:latest
 	docker push registry.service.dsd.io/opguk/sensu-server:${currenttag}
 	docker push registry.service.dsd.io/opguk/sensu-server:latest
 	docker push registry.service.dsd.io/opguk/uchiwa:${currenttag}
@@ -41,5 +44,6 @@ pull:
 	docker pull registry.service.dsd.io/opguk/monitoring-proxy
 	docker pull registry.service.dsd.io/opguk/sensu
 	docker pull registry.service.dsd.io/opguk/sensu-api
+	docker pull registry.service.dsd.io/opguk/sensu-client
 	docker pull registry.service.dsd.io/opguk/sensu-server
 	docker pull registry.service.dsd.io/opguk/uchiwa

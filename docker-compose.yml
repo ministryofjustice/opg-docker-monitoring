@@ -11,7 +11,7 @@ kibana:
 
 # data on volume
 elasticsearch:
-  image: elasticsearch:latest
+  image: registry.service.dsd.io/opguk/elasticsearch:latest
   ports:
     - 9200:9200
     - 9300:9300
@@ -76,6 +76,17 @@ sensuapi:
     - redis
     - rabbitmq
   env_file: ./env
+
+
+sensuclient:
+  image: registry.service.dsd.io/opguk/sensu-client:latest
+  links:
+    - redis
+    - rabbitmq
+    - graphite
+  env_file: ./env
+  volumes:
+    - ./tmp:/etc/sensu/conf.d
 
 
 uchiwa:

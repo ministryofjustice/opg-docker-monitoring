@@ -1,5 +1,11 @@
 An arbitrary set of preconfigured docker images, to quickly build your monitoring stack.
+=======
+opg-docker-monitoring
+=====================
 
+Arbitrary set of preconfigured docker images to quickly build your monitoring stack
+
+![opg-docker-monitoring overview](https://cloud.githubusercontent.com/assets/13198078/8695568/a18a5fc6-2add-11e5-8377-7fe6b613f870.jpg "Docker monitoring overview")
 
 Links
 -----

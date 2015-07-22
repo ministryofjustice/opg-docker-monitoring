@@ -1,0 +1,8 @@
+[template]
+src = "config.json.tmpl"
+dest = "/etc/sensu/config.json"
+keys = [
+    "/sensu/redis",
+    "/sensu/rabbitmq",
+    "/sensu/client",
+]

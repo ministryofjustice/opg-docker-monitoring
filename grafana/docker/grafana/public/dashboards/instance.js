@@ -202,10 +202,12 @@ function panel_collectd_loadavg(title, prefix) {
         linewidth: 1,
         nullPointMode: "null",
         targets: [{
-            "target": "alias(countSeries(" + metric_filter + ".cpu.*.*.idle),'cpuCount')"
-        }, {
+            "target": "aliasByNode(movingMedian(" + metric_filter + ".load.load.longterm,'10min'),-1)"
+        },{
             "target": "aliasByNode(movingMedian(" + metric_filter + ".load.load.midterm,'10min'),-1)"
-        }, ],
+        },{
+            "target": "aliasByNode(movingMedian(" + metric_filter + ".load.load.shortterm,'10min'),-1)"
+        }],
         aliasColors: {
             "cpuCount": "green",
             "midterm": "red"
@@ -352,7 +354,7 @@ function row_network(title, prefix, filter) {
     var interfaces = find_filter_values(filter + '.interface.*');
     var panels_network = [];
     for (var i in interfaces) {
-        if ( /^eth\d/.test(volumes[i]) ) { continue; }
+        if ( ! /^eth\d/.test(interfaces[i]) ) { continue; }
         panels_network.push(
             panel_collectd_network_octets('network octets', prefix, interfaces[i]),
             panel_collectd_network_packets('network packets', prefix, interfaces[i])

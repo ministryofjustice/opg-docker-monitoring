@@ -1,22 +1,21 @@
-opg-docker-monitoring!
+opg-docker-monitoring
 =====================
 
 Arbitrary set of preconfigured docker images to quickly build your monitoring stack
 
 ![opg-docker-monitoring overview](https://cloud.githubusercontent.com/assets/13198078/8695568/a18a5fc6-2add-11e5-8377-7fe6b613f870.jpg "Docker monitoring overview")
 
-
-links
+Links
 -----
 http://grafana.your_domain/
 
-grafana js based dashboards expect to reach graphite directly through
+Grafana js based dashboards expect to reach graphite directly through
 http://graphite.your_domain/
 
 for debugging you can use: $(boot2docker ip).xip.io:8080
 
 
-containers
+Containers
 ----------
 
 
@@ -62,10 +61,15 @@ https://grafana.(domainname)/dashboard/script/overview.js?env=(metrics_prefix)
 in progress
 
 
-collectd
+Collectd
 ========
-collectd configured to feed metrics to monitoring on port 25826 (collectd listener)
-just for testing
+Collectd configured to feed metrics to a carbon collector on port 2003. For more information on collectd see https://collectd.org/.
+
+This implementation of collectd comes with a few basic checks, as well as a custom btrfs check from https://github.com/soellman/docker-collectd
+
+Checks:
+- 
+
 
 
 app

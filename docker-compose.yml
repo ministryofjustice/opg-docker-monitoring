@@ -1,5 +1,5 @@
 kibana:
-  image: marcbachmann/kibana4:latest
+  image: registry.service.dsd.io/opguk/kibana:latest
   environment:
     ELASTICSEARCH: http://elasticsearch:9200
   ports:

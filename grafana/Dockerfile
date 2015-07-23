@@ -10,7 +10,7 @@ RUN  apt-get update && apt-get -y upgrade && \
      rm -rf /var/lib/cache/* /var/lib/log/* /tmp/* /var/tmp/*
 
 
-VOLUME ["/var/lib/grafana"]
+VOLUME ["/usr/share/grafana/data"]
 
 WORKDIR /usr/share/grafana
 

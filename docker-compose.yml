@@ -1,3 +1,24 @@
+router:
+  image: registry.service.dsd.io/opguk/nginx-router:latest
+  ports:
+    - 80:80
+    - 443:443
+  links:
+    - kibana
+    - grafana
+    - graphite
+    - uchiwa
+  environment:
+    - OPG_NGINX_ROUTER_00_VHOST=kibana.*
+    - OPG_NGINX_ROUTER_00_TARGET=http://kibana
+    - OPG_NGINX_ROUTER_01_VHOST=grafana.*
+    - OPG_NGINX_ROUTER_01_TARGET=http://grafana
+    - OPG_NGINX_ROUTER_02_VHOST=graphite.*
+    - OPG_NGINX_ROUTER_02_TARGET=http://graphite
+    - OPG_NGINX_ROUTER_03_VHOST=sensu.*
+    - OPG_NGINX_ROUTER_03_TARGET=http://uchiwa
+
+
 kibana:
   image: registry.service.dsd.io/opguk/kibana:latest
   environment:

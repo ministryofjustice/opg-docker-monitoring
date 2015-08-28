@@ -18,5 +18,9 @@ filter {
   "redis": {
     "host": "{{getv "/redis/host"}}",
     "port": {{getv "/redis/port"}}
-  } 
+  },
+  "api": {
+    "host": "{{getv "/api/host"}}",
+    "port": {{getv "/api/port"}}
+  }
 }

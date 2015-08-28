@@ -1,0 +1,22 @@
+{{if exists "/sensu"}}
+filter {
+  mutate {
+    add_field => {
+      "sensu" => '{{getv "/sensu"}}'
+    }
+  }
+}
+{{end}}
+{
+  "handlers": {
+    "slack": {
+      "command": "/opt/sensu/embedded/bin/handler-slack.rb",
+      "type": "pipe"
+    }
+  },
+  "slack": {
+    "webhook_url": "{{getv "/handler/slack/webhookurl"}}",
+    "channel": "{{getv "/handler/slack/channel"}}",
+    "bot_name": "{{getv "/handler/slack/botname"}}"
+  }
+}

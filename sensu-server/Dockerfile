@@ -17,7 +17,11 @@ RUN \
   apt-get update && \
   apt-get -y install libxml2-dev zlib1g-dev
 
-RUN /opt/sensu/embedded/bin/gem install sensu-plugins-slack sensu-plugins-aws
+ENV SENSU_PLUGINS_SLACK_VERSION 0.0.4
+ENV SENSU_PLUGINS_AWS_VERSION 1.2.0
+
+RUN /opt/sensu/embedded/bin/gem install sensu-plugins-slack --version $SENSU_PLUGINS_SLACK_VERSION && \
+    /opt/sensu/embedded/bin/gem install sensu-plugins-aws   --version $SENSU_PLUGINS_AWS_VERSION
 
 ADD docker/confd /etc/confd
 

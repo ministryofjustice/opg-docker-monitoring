@@ -1,0 +1,21 @@
+{{if exists "/sensu"}}
+filter {
+  mutate {
+    add_field => {
+      "sensu" => '{{getv "/sensu"}}'
+    }
+  }
+}
+{{end}}
+{
+  "handlers": {
+    "sns": {
+      "command": "/opt/sensu/embedded/bin/handler-sns.rb",
+      "type": "pipe"
+    }
+  },
+  "sns": {
+    "topic_arn": "{{getv "/handler/sns/topicarn"}}",
+    "region": "{{getv "/handler/sns/region"}}"
+  }
+}

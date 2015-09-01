@@ -10,8 +10,14 @@ ENV SENSU_API_PORT 4567
 ENV SENSU_HANDLER_SLACK_WEBHOOKURL http://localhost
 ENV SENSU_HANDLER_SLACK_CHANNEL @slackbot
 ENV SENSU_HANDLER_SLACK_BOTNAME sensubot
+ENV SENSU_HANDLER_SNS_TOPICARN dummyarn
+ENV SENSU_HANDLER_SNS_REGION eu-west-1
 
-RUN /opt/sensu/embedded/bin/gem install sensu-plugins-slack
+RUN \
+  apt-get update && \
+  apt-get -y install libxml2-dev zlib1g-dev
+
+RUN /opt/sensu/embedded/bin/gem install sensu-plugins-slack sensu-plugins-aws
 
 ADD docker/confd /etc/confd
 

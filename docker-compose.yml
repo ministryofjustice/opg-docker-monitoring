@@ -106,8 +106,6 @@ sensuclient:
     - rabbitmq
     - graphite
   env_file: ./env
-  volumes:
-    - ./tmp:/etc/sensu/conf.d
 
 
 uchiwa:
@@ -121,7 +119,7 @@ uchiwa:
 
 
 monitoringproxy:
-  build: monitoring-proxy
+  image: registry.service.dsd.io/opguk/monitoring-proxy:latest
   links:
     - redis
     - graphite

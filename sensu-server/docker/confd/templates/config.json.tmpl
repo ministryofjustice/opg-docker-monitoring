@@ -18,5 +18,33 @@ filter {
   "redis": {
     "host": "{{getv "/redis/host"}}",
     "port": {{getv "/redis/port"}}
-  } 
+  },
+{{if exists "/handlers/pagerduty/apikey"}}
+  "pagerduty": {
+    "api_key": "{{ getv "/handlers/pagerduty/apikey" }}"
+  },
+{{end}}
+  "handlers": {
+    "default": {
+      "type": "set",
+      "handlers": [
+        "stdout"
+      ]
+    },
+{{if exists "/handlers/pagerduty/apikey" }}
+    "pagerduty": {
+      "command": "/opt/sensu/embedded/bin/handler-pagerduty.rb",
+      "type": "pipe",
+      "severities": [
+        "critical",
+        "ok"
+      ]
+    },
+{{end}}
+    "stdout": {
+      "type": "pipe",
+      "command": "cat"
+    }
+  }
 }
+

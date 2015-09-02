@@ -5,4 +5,5 @@ dest = "/etc/sensu/config.json"
 keys = [
     "/redis",
     "/rabbitmq",
+    "/handlers",
 ]

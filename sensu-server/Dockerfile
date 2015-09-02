@@ -1,5 +1,7 @@
 FROM registry.service.dsd.io/opguk/sensu:latest
 
+RUN /opt/sensu/embedded/bin/gem install sensu-plugins-pagerduty
+
 ENV SENSU_REDIS_PORT 6379
 ENV SENSU_RABBITMQ_PORT 5672
 ENV SENSU_RABBITMQ_VHOST /sensu

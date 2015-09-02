@@ -5,7 +5,9 @@
       "command": "{{ getv (printf "/sensu/client/checks/base/%s/command" .) }}",
       "standalone": true,
       "subscribers": [ "all" ],
-      "interval": 60
+      "interval": 60,
+      "handle": "{{ getv (printf "/sensu/client/checks/base/%s/handle" .) }}",
+      "handlers": {{ getv (printf "/sensu/client/checks/base/%s/handlers" .) }}
     },
 {{ end }}
     "base_true": {

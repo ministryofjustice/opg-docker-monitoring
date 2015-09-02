@@ -5,7 +5,9 @@
       "command": "{{ getv (printf "/sensu/client/checks/role/%s/command" .) }}",
       "standalone": true,
       "subscribers": [ "{{ getv (printf "/sensu/client/checks/role/%s/subscribers" .) }}" ],
-      "interval": {{ getv (printf "/sensu/client/checks/role/%s/interval" .) }}
+      "interval": {{ getv (printf "/sensu/client/checks/role/%s/interval" .) }},
+      "handle": "{{ getv (printf "/sensu/client/checks/role/%s/handle" .) }}",
+      "handlers": {{ getv (printf "/sensu/client/checks/role/%s/handlers" .) }}
     },
 {{ end }}
     "role_true": {

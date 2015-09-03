@@ -84,14 +84,17 @@ rabbitmq:
 
 
 sensuserver:
+#  build: sensu-server
   image: registry.service.dsd.io/opguk/sensu-server:latest
   links:
     - redis
     - rabbitmq
+    - sensuapi
   env_file: ./env
 
 
 sensuapi:
+#  build: sensu-api
   image: registry.service.dsd.io/opguk/sensu-api:latest
   links:
     - redis
@@ -141,8 +144,8 @@ app:
 
 
 #example collectd feeder
-collectd:
-  build: collectd
-  links:
-    - monitoringproxy:monitoring
-  env_file: ./env
+#collectd:
+#  build: collectd
+#  links:
+#    - monitoringproxy:monitoring
+#  env_file: ./env

@@ -1,12 +1,3 @@
-{{if exists "/sensu"}}
-filter {
-  mutate {
-    add_field => {
-      "sensu" => '{{getv "/sensu"}}'
-    }
-  }
-}
-{{end}}
 {
   "rabbitmq": {
     "host": "{{getv "/rabbitmq/host"}}",
@@ -19,32 +10,23 @@ filter {
     "host": "{{getv "/redis/host"}}",
     "port": {{getv "/redis/port"}}
   },
-{{if exists "/handlers/pagerduty/apikey"}}
-  "pagerduty": {
-    "api_key": "{{ getv "/handlers/pagerduty/apikey" }}"
+  "api": {
+    "host": "{{getv "/api/host"}}",
+    "port": {{getv "/api/port"}}
   },
-{{end}}
   "handlers": {
     "default": {
       "type": "set",
       "handlers": [
+{{if exists "/handler/pagerduty/apikey" }}
+        "pagerduty",
+{{end}}
         "stdout"
       ]
     },
-{{if exists "/handlers/pagerduty/apikey" }}
-    "pagerduty": {
-      "command": "/opt/sensu/embedded/bin/handler-pagerduty.rb",
-      "type": "pipe",
-      "severities": [
-        "critical",
-        "ok"
-      ]
-    },
-{{end}}
     "stdout": {
       "type": "pipe",
       "command": "cat"
     }
   }
 }
-

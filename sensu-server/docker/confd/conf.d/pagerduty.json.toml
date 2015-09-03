@@ -1,0 +1,7 @@
+[template]
+prefix = "/sensu"
+src = "pagerduty.json.tmpl"
+dest = "/etc/sensu/conf.d/pagerduty.json"
+keys = [
+    "/handler/pagerduty",
+]

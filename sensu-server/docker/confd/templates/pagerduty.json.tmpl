@@ -1,0 +1,19 @@
+{{if exists "/handler/pagerduty/apikey" }}
+{
+  "pagerduty": {
+    "api_key": "{{ getv "/handler/pagerduty/apikey" }}"
+  },
+  "handlers": {
+    "pagerduty": {
+      "command": "/opt/sensu/embedded/bin/handler-pagerduty.rb",
+      "type": "pipe",
+      "severities": [
+        "critical",
+        "ok"
+      ]
+    }
+  }
+}
+{{else}}
+{}
+{{end}}

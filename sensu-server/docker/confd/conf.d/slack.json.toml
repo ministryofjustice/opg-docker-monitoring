@@ -1,0 +1,7 @@
+[template]
+prefix = "/sensu"
+src = "slack.json.tmpl"
+dest = "/etc/sensu/conf.d/slack.json"
+keys = [
+    "/handler",
+]

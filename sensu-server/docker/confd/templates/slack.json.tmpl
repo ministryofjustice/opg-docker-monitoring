@@ -1,0 +1,25 @@
+{{ if exists "/handler/slack/webhookurl" }}
+  {{ if exists "/handler/slack/channel" }}
+    {{ if exists "/handler/slack/botname" }}
+{
+  "handlers": {
+    "slack": {
+      "command": "/opt/sensu/embedded/bin/handler-slack.rb",
+      "type": "pipe"
+    }
+  },
+  "slack": {
+    "webhook_url": "{{getv "/handler/slack/webhookurl"}}",
+    "channel": "{{getv "/handler/slack/channel"}}",
+    "bot_name": "{{getv "/handler/slack/botname"}}"
+  }
+}
+    {{ else }}
+{}
+    {{ end }}
+  {{ else }}
+{}
+  {{ end }}
+{{ else }}
+{}
+{{ end }}

@@ -21,6 +21,12 @@
 {{if exists "/handler/pagerduty/apikey" }}
         "pagerduty",
 {{end}}
+{{if exists "/handler/slack/webhookurl" }}
+        "slack",
+{{end}}
+{{if exists "/handler/sns/topicarn" }}
+        "sns",
+{{end}}
         "stdout"
       ]
     },

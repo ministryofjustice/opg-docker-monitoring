@@ -1,0 +1,20 @@
+{{ if exists "/handler/sns/topicarn" }}
+  {{ if exists "/handler/sns/region" }}
+{
+  "handlers": {
+    "sns": {
+      "command": "/opt/sensu/embedded/bin/handler-sns.rb",
+      "type": "pipe"
+    }
+  },
+  "sns": {
+    "topic_arn": "{{getv "/handler/sns/topicarn"}}",
+    "region": "{{getv "/handler/sns/region"}}"
+  }
+}
+  {{ else }}
+{}
+  {{ end }}
+{{ else }}
+{}
+{{ end }}

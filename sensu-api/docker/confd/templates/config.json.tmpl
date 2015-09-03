@@ -1,13 +1,3 @@
-{{if exists "/sensu"}}
-filter {
-  mutate {
-    add_field => {
-      "sensu" => '{{getv "/sensu"}}'
-    }
-  }
-}
-{{end}}
-
 {
   "api": {
     "port": 4567,

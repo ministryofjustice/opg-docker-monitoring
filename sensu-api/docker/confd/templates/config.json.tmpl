@@ -8,8 +8,9 @@
   },
   "redis": {
     "host": "{{getv "/redis/host"}}",
-    "port": {{getv "/redis/port"}}
-  }, 
+    "port": {{getv "/redis/port"}},
+    "db": {{getv "/redis/db"}}
+  },
   "rabbitmq": {
     "host": "{{getv "/rabbitmq/host"}}",
     "port": {{getv "/rabbitmq/port"}},

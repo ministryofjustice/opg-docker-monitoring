@@ -109,24 +109,24 @@ function panel_node_links_markdown(node) {
 
 function panel_help_text() {
   var help_md = "### How to use this dashboard\n" +
-                "\n" +
-                "This dashboard expects:\n" +
-                "\n" +
-                "* collectd reporting to `{env}.{node}` - defaulting to `metrics.monitoring-01`\n" +
-                "* logstash reporting to statsd (for the events graph)\n" +
-                "\n" +
-                "Arguments:\n" +
-                "\n" +
-                "* `no_help` -- omit this panel\n" +
-                "* `env={metric_path}` set to the metric prefix of the graphite names for " +
-                "collectd graphs, eg 'metrics.pvb.prod'\n" +
-                "* `statsd_base={path}` override default statsd path for logstash events. " +
-                "Default is 'bucky.counters.logstash'\n" +
-                "* `node_domain_selector={selector}` -- find event type graphs under " +
-                "`{statsd_base}.per-host.{node_name}.{selector}.events.type`. Default '*.*'\n" +
-                "* `refresh={interval}` override default refresh interval of `1min`\n" +
-                "* `omit_columns={csv_list_of_titles}` omit 'graph title list' from the results (eg CPU,Memory)\n" +
-                ""
+      "\n" +
+      "This dashboard expects:\n" +
+      "\n" +
+      "* collectd reporting to `{env}.{node}` - defaulting to `metrics.monitoring-01`\n" +
+      "* logstash reporting to statsd (for the events graph)\n" +
+      "\n" +
+      "Arguments:\n" +
+      "\n" +
+      "* `no_help` -- omit this panel\n" +
+      "* `env={metric_path}` set to the metric prefix of the graphite names for " +
+      "collectd graphs, eg 'metrics.pvb.prod'\n" +
+      "* `statsd_base={path}` override default statsd path for logstash events. " +
+      "Default is 'bucky.counters.logstash'\n" +
+      "* `node_domain_selector={selector}` -- find event type graphs under " +
+      "`{statsd_base}.per-host.{node_name}.{selector}.events.type`. Default '*.*'\n" +
+      "* `refresh={interval}` override default refresh interval of `1min`\n" +
+      "* `omit_columns={csv_list_of_titles}` omit 'graph title list' from the results (eg CPU,Memory)\n" +
+      ""
 
   return {
     title: 'Help',
@@ -197,38 +197,11 @@ function panel_collectd_loadavg(title, prefix, node) {
     nullPointMode: "null",
     targets: [
       { "target": "alias(countSeries(" + prefix + "." + node + ".cpu.*.*.idle),'cpuCount')" },
-      { "target": "aliasByNode(movingMedian(" + prefix + "." + node + ".load.load.midterm,'10min')," +(idx+4)+ ")" },
+      { "target": "aliasByNode(" + prefix + "." + node + ".load.load.midterm," +(idx+4)+ ")" },
     ],
     aliasColors: {
       "cpuCount": "green",
       "midterm": "red"
-    }
-  }
-};
-
-function panel_collectd_ntp(title, prefix, node) {
-  return {
-    title: title,
-    type: 'graphite',
-    span: 2,
-    'y-axis': true,
-    y_formats: ["ms"],
-    grid: {max: 200, min: -200},
-    lines: true,
-    legend: {show: false},
-    fill: 0,
-    linewidth: 1,
-    stack: false,
-    nullPointMode: "null",
-    targets: [
-      { "target": "scale(aliasSub(mostDeviant(4," + prefix + "." + node + ".ntpd.time_offset.*.*.*.*),'.*\.(\d+)\.(\d+)\.(\d+)\.(\d+)$','\1.\2.\3.\4'),1000)" },
-      { "target": "alias(" + prefix + "." + node + ".ntpd.time_offset.loop, 'loop')" }
-    ],
-    aliasColors: {
-      "loop": "red",
-    },
-    aliasYAxis: {
-      "loop": 2,
     }
   }
 };
@@ -239,8 +212,7 @@ function panel_collectd_memory(title, prefix, node) {
     title: title,
     type: 'graphite',
     span: 2,
-    'y-axis': false,
-    y_formats: ["bytes"],
+    'y-axis': true,
     y_formats: ["bytes"],
     grid: {max: null, min: 0},
     lines: true,
@@ -261,29 +233,52 @@ function panel_collectd_memory(title, prefix, node) {
   }
 };
 
-function panel_collectd_logstash_event_types(title, node) {
-  var event_target = arg_statsd_base + ".per-host." + node + "." + arg_node_domain_selector + ".events.type.*.count"
-  var event_idx = len(event_target) - 1;
+function panel_collectd_disk_io(title, prefix, node) {
   return {
     title: title,
     type: 'graphite',
     span: 2,
+    'y-axis': true,
+    y_formats: ["bytes"],
+    grid: {max: null, min: 0},
+    lines: true,
+    legend: {show: false},
+    fill: 2,
+    linewidth: 1,
+    stack: false,
+    nullPointMode: "null",
+    targets: [
+      { "target": "alias(" + prefix + "." + node + ".disk.*.disk_ops.write, 'write')" },
+      { "target": "alias(scale(" + prefix + "." + node + ".disk.*.disk_ops.read, -1), 'read')" },
+    ],
+    aliasColors: {
+      "write": "#7EB26D",
+      "read": "#EAB839",
+    }
+  }
+};
+
+function panel_collectd_network_io(title, prefix, node) {
+  return {
+    title: title,
+    type: 'graphite',
+    span: 2,
+    'y-axis': true,
     y_formats: ["none"],
     grid: {max: null, min: 0},
     lines: true,
-    legend: {show: true},
+    legend: {show: false},
     fill: 2,
     linewidth: 1,
-    stack: true,
+    stack: false,
     nullPointMode: "null",
     targets: [
-      { "target": "aliasByNode(movingMedian("+event_target+",'1min')," + event_idx + ")" },
+      { "target": "alias(movingMedian(keepLastValue(" + prefix + "." + node + ".interface.eth0.if_packets.rx,10),'5min'),'rx')" },
+      { "target": "alias(movingMedian(scale(keepLastValue(" + prefix + "." + node + ".interface.eth0.if_packets.tx,10),-1),'5min'),'tx')" },
     ],
     aliasColors: {
-      "nginx": "#629E51",
-      "audit": "#EF843C",
-      "syslog": "#1F78C1",
-      "sensu": "#CCA300"
+      "rx": "#7EB26D",
+      "tx": "#EAB839",
     }
   }
 };
@@ -309,8 +304,8 @@ function row_of_node_panels(node,prefix) {
       panel_collectd_delta_cpu("CPU",prefix,node),
       panel_collectd_loadavg("Load",prefix,node),
       panel_collectd_memory("Memory",prefix,node),
-      panel_collectd_ntp("Time",prefix,node),
-      panel_collectd_logstash_event_types("Events",node)
+      panel_collectd_disk_io("Disk IO",prefix,node),
+      panel_collectd_network_io("Network IO",prefix,node)
     ]
   } else {
     omit_columns = arg_omit_columns.split(',')
@@ -323,11 +318,11 @@ function row_of_node_panels(node,prefix) {
     if ( omit_columns.indexOf("Memory") === -1 ) {
       valid_panels.push( panel_collectd_memory("Memory",prefix,node) )
     }
-    if ( omit_columns.indexOf("Time") === -1 ) {
-      valid_panels.push( panel_collectd_ntp("Time",prefix,node) )
+    if ( omit_columns.indexOf("Disk IO") === -1 ) {
+      valid_panels.push( panel_collectd_disk_io("Disk IO",prefix,node) )
     }
-    if ( omit_columns.indexOf("Events") === -1 ) {
-      valid_panels.push( panel_collectd_logstash_event_types("Events",node) )
+    if ( omit_columns.indexOf("Network IO") === -1 ) {
+      valid_panels.push( panel_collectd_network_io("Network IO",prefix,node) )
     }
   }
 
@@ -389,24 +384,24 @@ return function(callback) {
     method: 'GET',
     url: '/'
   })
-  .done(function(result) {
+      .done(function(result) {
 
-    if ( ! arg_no_help ) {
-      dashboard.rows.push(row_help_text())
-    }
+        if ( ! arg_no_help ) {
+          dashboard.rows.push(row_help_text())
+        }
 
-    if ( arg_nodes == '' ) {
-      display_nodes = find_filter_values(prefix + ".*")
-    } else {
-      display_nodes = arg_nodes.split(',')
-    }
+        if ( arg_nodes == '' ) {
+          display_nodes = find_filter_values(prefix + ".*")
+        } else {
+          display_nodes = arg_nodes.split(',')
+        }
 
-    for (var i in display_nodes) {
-      dashboard.rows.push(row_of_node_panels(display_nodes[i], prefix));
-    }
+        for (var i in display_nodes) {
+          dashboard.rows.push(row_of_node_panels(display_nodes[i], prefix));
+        }
 
-    // when dashboard is composed call the callback
-    // function and pass the dashboard
-    callback(dashboard);
-  });
+        // when dashboard is composed call the callback
+        // function and pass the dashboard
+        callback(dashboard);
+      });
 }

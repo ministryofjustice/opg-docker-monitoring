@@ -190,11 +190,11 @@ function panel_collectd_loadavg(title, prefix) {
         linewidth: 2,
         nullPointMode: "null",
         targets: [{
-            "target": "alias(movingMedian(" + metric_filter + ".load.load.longterm,'10min'),'longterm')"
+            "target": "alias(" + metric_filter + ".load.load.longterm,'longterm')"
         },{
-            "target": "alias(movingMedian(" + metric_filter + ".load.load.midterm,'10min'),'midterm')"
+            "target": "alias(" + metric_filter + ".load.load.midterm,'midterm')"
         },{
-            "target": "alias(movingMedian(" + metric_filter + ".load.load.shortterm,'10min'),'shortterm')"
+            "target": "alias(" + metric_filter + ".load.load.shortterm,'shortterm')"
         } ]
     }
 }

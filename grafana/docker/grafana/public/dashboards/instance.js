@@ -11,7 +11,7 @@
  *
  * For async scripts, return a function, this function must take a single callback function,
  * call this function with the dasboard object
- * 
+ *
  * Author: Anatoliy Dobrosynets, Recorded Future, Inc.
  */
 // accessable variables in this scope
@@ -87,9 +87,9 @@ function len(prefix){
 };
 
 
-/* 
-  panel templates
-*/
+/*
+ panel templates
+ */
 function panel_collectd_cpu(title, prefix) {
     var idx = len(prefix);
     return {
@@ -116,21 +116,21 @@ function panel_collectd_cpu(title, prefix) {
             query_as_alias: true
         },
         targets: [{
-            "target": "alias(sumSeries(nonNegativeDerivative(" + metric_filter + ".cpu.*.cpu.user,0)),'user')"
+            "target": "alias(sumSeries(" + metric_filter + ".cpu.*.cpu.user),'user')"
         }, {
-            "target": "alias(sumSeries(nonNegativeDerivative(" + metric_filter + ".cpu.*.cpu.system,0)),'system')"
+            "target": "alias(sumSeries(" + metric_filter + ".cpu.*.cpu.system),'system')"
         }, {
-            "target": "alias(sumSeries(nonNegativeDerivative(" + metric_filter + ".cpu.*.cpu.idle,0)),'idle')"
+            "target": "alias(sumSeries(" + metric_filter + ".cpu.*.cpu.idle),'idle')"
         }, {
-            "target": "alias(sumSeries(nonNegativeDerivative(" + metric_filter + ".cpu.*.cpu.wait,0)),'wait')"
+            "target": "alias(sumSeries(" + metric_filter + ".cpu.*.cpu.wait),'wait')"
         }, {
-            "target": "alias(sumSeries(nonNegativeDerivative(" + metric_filter + ".cpu.*.cpu.steal,0)),'steal')"
+            "target": "alias(sumSeries(" + metric_filter + ".cpu.*.cpu.steal),'steal')"
         }, {
-            "target": "alias(sumSeries(nonNegativeDerivative(" + metric_filter + ".cpu.*.cpu.nice,0)),'nice')"
+            "target": "alias(sumSeries(" + metric_filter + ".cpu.*.cpu.nice),'nice')"
         }, {
-            "target": "alias(sumSeries(nonNegativeDerivative(" + metric_filter + ".cpu.*.cpu.softirq,0)),'irq')"
+            "target": "alias(sumSeries(" + metric_filter + ".cpu.*.cpu.softirq),'irq')"
         }, {
-            "target": "alias(sumSeries(nonNegativeDerivative(" + metric_filter + ".cpu.*.cpu.interrupt,0)),'intrpt')"
+            "target": "alias(sumSeries(" + metric_filter + ".cpu.*.cpu.interrupt),'intrpt')"
         } ],
         aliasColors: {
             "user": "#508642",
@@ -190,11 +190,11 @@ function panel_collectd_loadavg(title, prefix) {
         linewidth: 2,
         nullPointMode: "null",
         targets: [{
-            "target": "alias(movingMedian(" + metric_filter + ".load.load.longterm,'10min'),'longterm')"
+            "target": "alias(" + metric_filter + ".load.load.longterm,'longterm')"
         },{
-            "target": "alias(movingMedian(" + metric_filter + ".load.load.midterm,'10min'),'midterm')"
+            "target": "alias(" + metric_filter + ".load.load.midterm,'midterm')"
         },{
-            "target": "alias(movingMedian(" + metric_filter + ".load.load.shortterm,'10min'),'shortterm')"
+            "target": "alias(" + metric_filter + ".load.load.shortterm,'shortterm')"
         } ]
     }
 }
@@ -215,9 +215,9 @@ function panel_collectd_network_octets(title, prefix, intrf) {
         linewidth: 2,
         nullPointMode: "null",
         targets: [{
-            "target": "alias(movingMedian(nonNegativeDerivative(keepLastValue(" + metric_filter + ".interface." + intrf + ".if_octets.rx,10),0),'5min'),'rx')"
+            "target": "alias(movingMedian(keepLastValue(" + metric_filter + ".interface." + intrf + ".if_octets.rx,10),'5min'),'rx')"
         }, {
-            "target": "alias(movingMedian(scale(nonNegativeDerivative(keepLastValue(" + metric_filter + ".interface." + intrf + ".if_octets.tx,10),0),-1),'5min'),'tx')"
+            "target": "alias(movingMedian(scale(keepLastValue(" + metric_filter + ".interface." + intrf + ".if_octets.tx,10),-1),'5min'),'tx')"
         }]
     }
 }
@@ -238,9 +238,9 @@ function panel_collectd_network_packets(title, prefix, intrf) {
         linewidth: 2,
         nullPointMode: "null",
         targets: [{
-            "target": "alias(movingMedian(nonNegativeDerivative(keepLastValue(" + metric_filter + ".interface." + intrf + ".if_packets.rx,10),0),'5min'),'rx')"
+            "target": "alias(movingMedian(keepLastValue(" + metric_filter + ".interface." + intrf + ".if_packets.rx,10),'5min'),'rx')"
         }, {
-            "target": "alias(movingMedian(scale(nonNegativeDerivative(keepLastValue(" + metric_filter + ".interface." + intrf + ".if_packets.tx,10),0),-1),'5min'),'tx')"
+            "target": "alias(movingMedian(scale(keepLastValue(" + metric_filter + ".interface." + intrf + ".if_packets.tx,10),-1),'5min'),'tx')"
         }]
     }
 }
@@ -264,9 +264,9 @@ function panel_collectd_df(title, prefix, vol) {
         nullPointMode: "null",
         targets: [{
             "target": "alias(" + metric_filter + ".df." + vol + ".df_complex.free,'free')"
-            },{
+        },{
             "target": "alias(" + metric_filter + ".df." + vol + ".df_complex.used,'used')"
-            },{
+        },{
             "target": "alias(" + metric_filter + ".df." + vol + ".df_complex.reserved,'reserved')"
         }],
         aliasColors: {
@@ -293,9 +293,9 @@ function panel_collectd_disk(title, prefix, vol) {
         linewidth: 2,
         nullPointMode: "null",
         targets: [{
-            "target": "alias(nonNegativeDerivative(" + metric_filter + ".disk." + vol + ".disk_ops.write,10),'write')"
+            "target": "alias(" + metric_filter + ".disk." + vol + ".disk_ops.write,'write')"
         }, {
-            "target": "alias(scale(nonNegativeDerivative(" + metric_filter + ".disk." + vol + ".disk_ops.read,10),-1),'read')"
+            "target": "alias(scale(" + metric_filter + ".disk." + vol + ".disk_ops.read,-1),'read')"
         }],
         aliasColors: {
             "df_complex-used": "#447EBC",
@@ -306,8 +306,8 @@ function panel_collectd_disk(title, prefix, vol) {
 }
 
 /*
-  row templates
-*/
+ row templates
+ */
 function row_delimiter(title) {
     return {
         title: "_____ " + title,
@@ -357,7 +357,7 @@ function row_disk_space(title, prefix, filter) {
     var volumes = find_filter_values(metric_filter + '.df.*');
     panels_disk_space = [];
     for (var i in volumes) {
-      if ( ! /root|srv|data/.test(volumes[i]) ) { continue; }
+        if ( ! /root|srv|data/.test(volumes[i]) ) { continue; }
         panels_disk_space.push(panel_collectd_df('disk space', prefix, volumes[i]));
     }
     return {
@@ -371,7 +371,7 @@ function row_disk_usage(title, prefix, filter) {
     var volumes = find_filter_values(metric_filter + '.disk.*');
     var panels_disk_usage = [];
     for (var i in volumes) {
-       if ( /\d/.test(volumes[i]) ) { continue; } 
+        if ( /\d/.test(volumes[i]) ) { continue; }
         panels_disk_usage.push(panel_collectd_disk('disk ops read/write', prefix, volumes[i]));
     }
     return {
@@ -421,9 +421,9 @@ return function(callback) {
     var optional_rows = [];
 
     $.ajax({
-            method: 'GET',
-            url: '/'
-        })
+        method: 'GET',
+        url: '/'
+    })
         .done(function(result) {
             dashboard.rows.push(
                 row_cpu_memory('cpu, memory', prefix),

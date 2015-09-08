@@ -22,7 +22,6 @@ var arg_env = 'metrics';
 var arg_i = '*';
 var arg_span = 4;
 var arg_from = '2h';
-var arg_host = 'http://localhost:8003';
 
 if (!_.isUndefined(ARGS.span)) {
     arg_span = ARGS.span;
@@ -35,9 +34,6 @@ if (!_.isUndefined(ARGS.env)) {
 }
 if (!_.isUndefined(ARGS.i)) {
     arg_i = ARGS.i;
-}
-if (!_.isUndefined(ARGS.host)) {
-    arg_host = ARGS.host;
 }
 
 var metric_filter = arg_env + "." + arg_i;
@@ -68,35 +64,28 @@ function get_filter_object(name, query, show_all) {
         includeAll: show_all
     }
 }
-function find_filter_values(query) {
-    var search_url = arg_host + '/metrics/find/?query=' + query;
+// execute graphite-api /metrics/find query
+// return array of metric last names ( func('test.cpu-*') returns ['cpu-0','cpu-1',..] )
+function find_filter_values(query){
+    var search_url = window.location.protocol + '//' + window.location.hostname.replace(/^grafana/,"graphite") + (window.location.port ? ":" + window.location.port : "") + '/metrics/find/?query=' + query;
     var res = [];
     var req = new XMLHttpRequest();
     req.open('GET', search_url, false);
     req.send(null);
     var obj = JSON.parse(req.responseText);
-    for (var key in obj) {
+    for(var key in obj) {
         if (obj[key].hasOwnProperty("text")) {
             res.push(obj[key]["text"]);
         }
     }
     return res;
-}
-function expand_filter_values(query) {
-    var search_url = arg_host + '/metrics/expand/?query=' + query;
-    var req = new XMLHttpRequest();
-    req.open('GET', search_url, false);
-    req.send(null);
-    var obj = JSON.parse(req.responseText);
-    if (obj.hasOwnProperty('results')) {
-        return obj['results'];
-    } else {
-        return [];
-    }
-}
-function len(prefix) {
-    return prefix.split('.').length - 2;
-}
+};
+
+// used to calculate aliasByNode index in panel template
+function len(prefix){
+    return prefix.split('.').length - 1;
+};
+
 
 /* 
   panel templates

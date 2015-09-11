@@ -65,9 +65,66 @@ Collectd configured to feed metrics to a carbon collector on port 2003. For more
 This implementation of collectd comes with a few basic checks, as well as a custom btrfs check from https://github.com/soellman/docker-collectd
 
 
-## app
+## App
 
 Demo web app container (to demonstrate use of monitoring proxy).
+
+## Sensu-Client
+
+#### Base checks
+
+Base checks are designed to go into the `base.sls` pillar so applied to everything.
+
+Environment variables (mandatory for each check):
+
+- SENSU_CLIENT_CHECKS_BASE_checkname_NAME
+- SENSU_CLIENT_CHECKS_BASE_checkname_COMMAND
+
+where `checkname` is the name of the check.
+
+Environment variables (optional for each check):
+
+- SENSU_CLIENT_CHECKS_BASE_checkname_SUBSCRIBERS (default "all")
+- SENSU_CLIENT_CHECKS_BASE_checkname_INTERVAL (default 60)
+
+where `checkname` is the name of the check.
+
+#### Subduing a check
+
+In addition to the ability to fully disable the handling of certain checks, Sensu supports ‘subduing’ checks so that they are not handled during certain hours of the day. This is done by configuring the "begin" and "end" times for the check’s "subdue" attribute.
+
+- SENSU_CLIENT_CHECKS_BASE_checkname_SUBDUEBEGIN
+- SENSU_CLIENT_CHECKS_BASE_checkname_SUBDUEEND
+
+e.g.
+
+- SENSU_CLIENT_CHECKS_BASE_LOADSHORTTERM_SUBDUEBEGIN=5AM UTC
+- SENSU_CLIENT_CHECKS_BASE_LOADSHORTTERM_SUBDUEEND=7PM UTC
+
+#### Default subdue
+
+If you want to set a global subdue window for all checks, you can use the following variables:
+
+- SENSU_CLIENT_CHECKS_BASE_SUBDUEBEGIN
+- SENSU_CLIENT_CHECKS_BASE_SUBDUEEND    
+
+If none of the subdue variables above are set, the defaults will be:
+
+- Subdue begin 6PM UTC
+- Subdue end 8AM UTC
+
+An individual check based subdue (begin or end) will override a global subdue (begin or end) which will override the defaults.
+
+For  more information on Sensu checks please refer to https://sensuapp.org/docs/latest/checks
+
+#### Role checks
+
+Role based checks are designed to go into a `role` pillar so used only on a set of servers in a particular role.
+
+The variables for role checks are the same as those described above with the `BASE` in the variable name replaced with `ROLE` e.g.
+
+- SENSU_CLIENT_CHECKS_ROLE_BTRFSPCTUSED_NAME
+- SENSU_CLIENT_CHECKS_ROLE_BTRFSPCTUSED_COMMAND
 
 ## Sensu-Server
 

@@ -21,7 +21,7 @@
     {{ if exists "/sensu/client/checks/role/subdueend" }}
         "end": "{{ getv "/sensu/client/checks/role/subdueend" }}"
     {{ else }}
-        "end": "8AM UCT"
+        "end": "8AM UTC"
     {{ end }}
 {{ end }}
       },

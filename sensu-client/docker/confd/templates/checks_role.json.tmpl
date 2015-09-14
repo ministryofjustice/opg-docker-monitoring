@@ -4,8 +4,28 @@
     "{{ getv (printf "/sensu/client/checks/role/%s/name" .) }}": {
       "command": "{{ getv (printf "/sensu/client/checks/role/%s/command" .) }}",
       "standalone": true,
-      "subscribers": [ "{{ getv (printf "/sensu/client/checks/role/%s/subscribers" .) }}" ],
-      "interval": {{ getv (printf "/sensu/client/checks/role/%s/interval" .) }}
+      "subscribers": [ {{ if exists (printf "/sensu/client/checks/role/%s/subscribers" .) }}{{ getv (printf "/sensu/client/checks/role/%s/subscribers" .) }}{{ else }}"all"{{ end }} ],
+      "subdue": {
+{{ if exists (printf "/sensu/client/checks/role/%s/subduebegin" .) }}
+        "begin": "{{ getv (printf "/sensu/client/checks/role/%s/subduebegin" .) }}",
+{{ else }}
+    {{ if exists "/sensu/client/checks/role/subduebegin" }}
+        "begin": "{{ getv "/sensu/client/checks/role/subduebegin" }}",
+    {{ else }}
+        "begin": "6PM UTC",
+    {{ end }}
+{{ end }}
+{{ if exists (printf "/sensu/client/checks/role/%s/subdueend" .) }}
+        "end": "{{ getv (printf "/sensu/client/checks/role/%s/subdueend" .) }}"
+  {{ else }}
+    {{ if exists "/sensu/client/checks/role/subdueend" }}
+        "end": "{{ getv "/sensu/client/checks/role/subdueend" }}"
+    {{ else }}
+        "end": "8AM UTC"
+    {{ end }}
+{{ end }}
+      },
+      "interval": {{ if exists (printf "/sensu/client/checks/role/%s/interval" .) }}{{ getv (printf "/sensu/client/checks/role/%s/interval" .) }}{{ else }}60{{ end }}
     },
 {{ end }}
     "role_true": {

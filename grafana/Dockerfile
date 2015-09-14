@@ -9,12 +9,10 @@ RUN  apt-get update && apt-get -y upgrade && \
      apt-get clean && apt-get autoremove && \
      rm -rf /var/lib/cache/* /var/lib/log/* /tmp/* /var/tmp/*
 
+RUN mkdir -p /usr/share/grafana/data && chown -R grafana:grafana /usr/share/grafana/data
 
 VOLUME ["/usr/share/grafana/data"]
-
 WORKDIR /usr/share/grafana
-
-
 
 ADD  docker/service/grafana /etc/service/grafana
 RUN  chmod a+x /etc/service/grafana/run

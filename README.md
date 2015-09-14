@@ -101,6 +101,8 @@ e.g.
 - SENSU_CLIENT_CHECKS_BASE_LOADSHORTTERM_SUBDUEBEGIN=5AM UTC
 - SENSU_CLIENT_CHECKS_BASE_LOADSHORTTERM_SUBDUEEND=7PM UTC
 
+NOTE: BOTH must be supplied (BEGIN and END) or neither.
+
 #### Default subdue
 
 If you want to set a global subdue window for all checks, you can use the following variables:
@@ -108,12 +110,11 @@ If you want to set a global subdue window for all checks, you can use the follow
 - SENSU_CLIENT_CHECKS_BASE_SUBDUEBEGIN
 - SENSU_CLIENT_CHECKS_BASE_SUBDUEEND    
 
-If none of the subdue variables above are set, the defaults will be:
+NOTE: BOTH must be supplied (BEGIN and END) or neither.
 
-- Subdue begin 6PM UTC
-- Subdue end 8AM UTC
+If none of the subdue variables above are set, the default will be that NO SUBDUE window is defined.
 
-An individual check based subdue (begin or end) will override a global subdue (begin or end) which will override the defaults.
+An individual check based subdue window will override a global subdue window which will override the default.
 
 For  more information on Sensu checks please refer to https://sensuapp.org/docs/latest/checks
 

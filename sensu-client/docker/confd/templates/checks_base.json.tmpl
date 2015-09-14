@@ -5,26 +5,24 @@
       "command": "{{ getv (printf "/sensu/client/checks/base/%s/command" .) }}",
       "standalone": true,
       "subscribers": [ {{ if exists (printf "/sensu/client/checks/base/%s/subscribers" .) }}{{ getv (printf "/sensu/client/checks/base/%s/subscribers" .) }}{{ else }}"all"{{ end }} ],
-      "subdue": {
 {{ if exists (printf "/sensu/client/checks/base/%s/subduebegin" .) }}
+      "subdue": {
         "begin": "{{ getv (printf "/sensu/client/checks/base/%s/subduebegin" .) }}",
 {{ else }}
     {{ if exists "/sensu/client/checks/base/subduebegin" }}
+      "subdue": {
         "begin": "{{ getv "/sensu/client/checks/base/subduebegin" }}",
-    {{ else }}
-        "begin": "6PM UTC",
     {{ end }}
 {{ end }}
 {{ if exists (printf "/sensu/client/checks/base/%s/subdueend" .) }}
         "end": "{{ getv (printf "/sensu/client/checks/base/%s/subdueend" .) }}"
+      },
   {{ else }}
     {{ if exists "/sensu/client/checks/base/subdueend" }}
         "end": "{{ getv "/sensu/client/checks/base/subdueend" }}"
-    {{ else }}
-        "end": "8AM UTC"
+      },
     {{ end }}
 {{ end }}
-      },
       "interval": {{ if exists (printf "/sensu/client/checks/base/%s/interval" .) }}{{ getv (printf "/sensu/client/checks/base/%s/interval" .) }}{{ else }}60{{ end }}
     },
 {{ end }}

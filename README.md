@@ -127,6 +127,44 @@ The variables for role checks are the same as those described above with the `BA
 - SENSU_CLIENT_CHECKS_ROLE_BTRFSPCTUSED_NAME
 - SENSU_CLIENT_CHECKS_ROLE_BTRFSPCTUSED_COMMAND
 
+#### Plugins
+
+The `opg-check-elasticrecent.sh` plugin will check whether there are particular Elasticsearch index entries for a specified index within a recent time period. The `ELASTIC_INDEX` variable should be set to the index to check. The default is `logstash-$(date '+%Y.%m.%d')`. The time period can be specified with the `SENSU_CLIENT_ELASTIC_RECENT` variable (see below). The default for this variable is `5m` and should follow the standard format for Elasticsearch Query DSL filters.
+
+The `opg-check-functions.sh` is designed to contain reusable functions that can be called by other plugins. e.g. the `curl_and_return` function can be used to return the output from a curl command back to the caller. Any functions that can be reused should be added to this plugin and should be defined with the `function` statement so that they are exported correctly for child processes to call on.
+
+The `opg-check-wrapper.sh` is designed to be used to invoke both community and in-house developed plugins. It sets up a number of variables that can be used by in-house developed plugins based on environment variables passed into the docker container at startup by an env file:
+
+- SENSU_CLIENT_CURL_TIMEOUT
+- SENSU_CLIENT_ELASTIC_PORT
+- SENSU_CLIENT_ELASTIC_RECENT
+
+The default values plus an explanation of each variable can be found in the comments within the wrapper plugin. Any additional variables used by newly developed plugins should be setup with defaults in the same way. Other variables passed in via docker environment files can be passed straight to community plugins.
+
+The wrapper also sets up a variable `DEFAULT_HOST` which is the IP address of the default gateway (which inside docker is the method for gaining access to ports exposed by other containers to the host).
+
+To invoke a plugin via the wrapper simply set `OPG_CHECK` to whatever should be run to initiate the check and the wrapper will execute and return the exit code from it back to Sensu. Therefore in-house written checks should follow the standard exit codes for Sensu as desribed at https://sensuapp.org/docs/latest/checks
+
+The following are examples of pillar defining checks that use the wrapper (both in-house developed as well as community plugin checks):
+
+`SENSU_CLIENT_CHECKS_ROLE_ESRECENT_NAME: esrecent`
+`SENSU_CLIENT_CHECKS_ROLE_ESRECENT_COMMAND: "export ELASTIC_INDEX='.marvel-$(date +%Y.%m.%d)' ; export SENSU_CLIENT_ELASTIC_RECENT=20m ; export OPG_CHECK='/etc/sensu/plugins/opg-check-elasticrecent.sh' ; /etc/sensu/plugins/opg-check-wrapper.sh"`
+
+`SENSU_CLIENT_CHECKS_ROLE_REDIS_NAME: redis`
+`SENSU_CLIENT_CHECKS_ROLE_REDIS_COMMAND: "export OPG_CHECK='/opt/sensu/embedded/bin/check-redis-ping.rb --host $DEFAULT_HOST --port $SENSU_CLIENT_REDIS_PORT' ; /etc/sensu/plugins/opg-check-wrapper.sh"`
+
+`SENSU_CLIENT_CHECKS_ROLE_KIBANA_NAME: kibana`
+`SENSU_CLIENT_CHECKS_ROLE_KIBANA_COMMAND: "export OPG_CHECK='/opt/sensu/embedded/bin/check-http.rb --url http://$DEFAULT_HOST:$SENSU_CLIENT_KIBANA_PORT' ; /etc/sensu/plugins/opg-check-wrapper.sh"`
+
+`SENSU_CLIENT_CHECKS_ROLE_ELASTIC_NAME: elastic`
+`SENSU_CLIENT_CHECKS_ROLE_ELASTIC_COMMAND: "export OPG_CHECK='/opt/sensu/embedded/bin/check-http.rb --url http://$DEFAULT_HOST:$SENSU_CLIENT_ELASTIC_PORT' ; /etc/sensu/plugins/opg-check-wrapper.sh"`
+
+`SENSU_CLIENT_CHECKS_ROLE_ESHEAP_NAME: esheap`
+`SENSU_CLIENT_CHECKS_ROLE_ESHEAP_COMMAND: "export OPG_CHECK='/opt/sensu/embedded/bin/check-es-heap.rb --host $DEFAULT_HOST --port $SENSU_CLIENT_ELASTIC_PORT -P -w 80 -c 90' ; /etc/sensu/plugins/opg-check-wrapper.sh"`
+
+`SENSU_CLIENT_CHECKS_ROLE_ESNODE_NAME: esnode`
+`SENSU_CLIENT_CHECKS_ROLE_ESNODE_COMMAND: "export OPG_CHECK='/opt/sensu/embedded/bin/check-es-node-status.rb --host $DEFAULT_HOST --port $SENSU_CLIENT_ELASTIC_PORT' ; /etc/sensu/plugins/opg-check-wrapper.sh"`
+
 ## Sensu-Server
 
 Environment variables with defaults:

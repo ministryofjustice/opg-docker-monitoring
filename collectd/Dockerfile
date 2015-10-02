@@ -10,3 +10,5 @@ ADD  docker/service/collectd /etc/service/collectd
 RUN  chmod a+x /etc/service/collectd/run
 
 ADD  docker/collectd /etc/collectd
+
+ENV OPG_SERVICE collectd

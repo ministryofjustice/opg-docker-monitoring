@@ -19,3 +19,5 @@ RUN chmod a+x /etc/service/uchiwa/run
 ADD docker/confd /etc/confd
 
 EXPOSE 3000
+
+ENV OPG_SERVICE uchiwa

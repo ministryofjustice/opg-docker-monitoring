@@ -20,5 +20,6 @@ RUN  chmod a+x /etc/service/grafana/run
 ADD  docker/grafana /usr/share/grafana
 RUN  chown -R grafana:grafana /usr/share/grafana/
 
+ENV OPG_SERVICE grafana
 
 EXPOSE 3000

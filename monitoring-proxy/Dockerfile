@@ -56,3 +56,5 @@ EXPOSE 6379
 
 #collectd entry
 EXPOSE 25826
+
+ENV OPG_SERVICE monitoring-proxy

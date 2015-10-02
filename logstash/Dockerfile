@@ -20,3 +20,5 @@ RUN  chmod a+x /etc/service/logstash/run
 #syslog input out of namespace
 EXPOSE 2514
 EXPOSE 2514/udp
+
+ENV  OPG_SERVICE logstash

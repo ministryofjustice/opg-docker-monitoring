@@ -134,7 +134,7 @@ monitoringproxy:
   env_file: ./env
 
 
-# example app feeding to the monitoring stack
+# example app feeding logs to the monitoring stack
 app:
   image: registry.service.dsd.io/opguk/nginx:latest
   links:

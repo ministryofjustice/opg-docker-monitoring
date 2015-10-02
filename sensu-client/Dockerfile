@@ -26,3 +26,5 @@ ADD docker/confd /etc/confd
 
 ADD docker/service/sensu-client /etc/service/sensu-client
 RUN chmod a+x /etc/service/sensu-client/run
+
+ENV OPG_SERVICE sensu-client

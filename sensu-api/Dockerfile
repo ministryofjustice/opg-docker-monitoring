@@ -18,3 +18,4 @@ RUN chmod a+x /etc/service/sensu-api/run
 
 EXPOSE 4567
 
+ENV OPG_SERVICE sensu-api

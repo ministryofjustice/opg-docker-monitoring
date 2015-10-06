@@ -105,6 +105,8 @@ sensuapi:
 
 sensuclient:
   image: registry.service.dsd.io/opguk/sensu-client:latest
+  ports:
+    - 3030:3030
   links:
     - redis
     - rabbitmq

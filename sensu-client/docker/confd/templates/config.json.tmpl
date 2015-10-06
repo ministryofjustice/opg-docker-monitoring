@@ -10,6 +10,9 @@
     "name": "{{getv "/sensu/client/name"}}",
     "metric_prefix": "{{getv "/sensu/client/metric/prefix"}}",
     "address": "127.0.0.1",
+    "socket": {
+      "bind": "0.0.0.0"
+    },
     "subscriptions": [ "all" ],
     "graphite_check_cmd": "{{getv "/sensu/client/graphite/check/cmd"}}",
     "graphite_check_host": "{{getv "/sensu/client/graphite/check/host"}}"

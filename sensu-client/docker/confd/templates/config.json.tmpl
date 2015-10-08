@@ -1,20 +1,13 @@
 {
-  "rabbitmq": {
-    "host": "{{getv "/sensu/rabbitmq/host"}}",
-    "port": {{getv "/sensu/rabbitmq/port"}},
-    "vhost": "{{getv "/sensu/rabbitmq/vhost"}}",
-    "user": "{{getv "/sensu/rabbitmq/user"}}",
-    "password": "{{getv "/sensu/rabbitmq/password"}}"
-  },
   "client": {
-    "name": "{{getv "/sensu/client/name"}}",
-    "metric_prefix": "{{getv "/sensu/client/metric/prefix"}}",
+    "name": "{{getv "/client/name"}}",
+    "metric_prefix": "{{getv "/client/metric/prefix"}}",
     "address": "127.0.0.1",
     "socket": {
       "bind": "0.0.0.0"
     },
     "subscriptions": [ "all" ],
-    "graphite_check_cmd": "{{getv "/sensu/client/graphite/check/cmd"}}",
-    "graphite_check_host": "{{getv "/sensu/client/graphite/check/host"}}"
+    "graphite_check_cmd": "{{getv "/client/graphite/check/cmd"}}",
+    "graphite_check_host": "{{getv "/client/graphite/check/host"}}"
   }
 }

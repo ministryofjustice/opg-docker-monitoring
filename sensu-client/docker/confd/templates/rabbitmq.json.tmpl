@@ -1,0 +1,17 @@
+{
+  "rabbitmq": {
+    {{ if exists "/rabbitmq/ssl" }}
+    "ssl": {
+      "cert_chain_file": "/etc/ssl/cert.pem",
+      "private_key_file": "/etc/ssl/key.pem"
+    },
+    "port": 5671,
+    {{ else }}
+    "port": {{getv "/rabbitmq/port"}},
+    {{ end }}
+    "host": "{{getv "/rabbitmq/host"}}",
+    "vhost": "{{getv "/rabbitmq/vhost"}}",
+    "user": "{{getv "/rabbitmq/user"}}",
+    "password": "{{getv "/rabbitmq/password"}}"
+  }
+}

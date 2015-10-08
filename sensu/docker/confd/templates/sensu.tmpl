@@ -1,0 +1,7 @@
+EMBEDDED_RUBY=false
+{{ if exists "/sensu/default/log/level" }}
+LOG_LEVEL={{ getv "/sensu/default/log/level" }}
+{{ else }}
+LOG_LEVEL=warn
+{{ end }}
+

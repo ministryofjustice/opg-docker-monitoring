@@ -69,6 +69,12 @@ This implementation of collectd comes with a few basic checks, as well as a cust
 
 Demo web app container (to demonstrate use of monitoring proxy).
 
+## Sensu
+
+The defautl log_level is 'warn'.  To change this use the following environment variable:
+-  SENSU_DEFAULT_LOG_LEVEL
+
+
 ## Sensu-Client
 
 #### Base checks

@@ -1,7 +1,6 @@
 [template]
-prefix = "/sensu"
 src = "sensu.tmpl"
 dest = "/etc/default/sensu"
 keys = [
-    "/default"
+    "/sensu"
 ]

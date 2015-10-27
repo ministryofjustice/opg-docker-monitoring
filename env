@@ -61,3 +61,38 @@ SENSU_CLIENT_KIBANA_PORT=8001
 SENSU_CLIENT_REDIS_PORT=6379
 SENSU_CLIENT_RABBITMQ_PORT=5672
 SENSU_CLIENT_UCHIWA_PORT=8004
+
+# Samples to define multiple Sensu endpoints (Datacentres)
+# Examples use the same host to prove the process of adding additional DCs but in reality
+# each host would be a different Sensu API end point (e.g. prod, dev, pipeline, etc)
+
+# Number of items in the range of elements (starting from zero i.e. for one element put 0)
+#UCHIWA_SENSU_MULTIPLE=2
+
+# Data Centres
+#UCHIWA_SENSU_DC_ONE_NAME=local
+#UCHIWA_SENSU_DC_ONE_HOST=sensuapi
+#UCHIWA_SENSU_DC_ONE_PORT=4567
+#UCHIWA_SENSU_DC_ONE_SSL=false
+#UCHIWA_SENSU_DC_ONE_INSECURE=true
+#UCHIWA_SENSU_DC_ONE_USER=sensu
+#UCHIWA_SENSU_DC_ONE_PASS=sensu
+#UCHIWA_SENSU_DC_ONE_TIMEOUT=5
+#
+#UCHIWA_SENSU_DC_TWO_NAME=prod
+#UCHIWA_SENSU_DC_TWO_HOST=sensuapi
+#UCHIWA_SENSU_DC_TWO_PORT=4567
+#UCHIWA_SENSU_DC_TWO_SSL=false
+#UCHIWA_SENSU_DC_TWO_INSECURE=true
+#UCHIWA_SENSU_DC_TWO_USER=sensu
+#UCHIWA_SENSU_DC_TWO_PASS=sensu
+#UCHIWA_SENSU_DC_TWO_TIMEOUT=10
+#
+#UCHIWA_SENSU_DC_THREE_NAME=pipeline
+#UCHIWA_SENSU_DC_THREE_HOST=sensuapi
+#UCHIWA_SENSU_DC_THREE_PORT=4567
+#UCHIWA_SENSU_DC_THREE_SSL=false
+#UCHIWA_SENSU_DC_THREE_INSECURE=true
+#UCHIWA_SENSU_DC_THREE_USER=sensu
+#UCHIWA_SENSU_DC_THREE_PASS=sensu
+#UCHIWA_SENSU_DC_THREE_TIMEOUT=15

@@ -208,6 +208,32 @@ Environment variables for the AWS SNS handler:
 - When they exist, all variables for a handler should be defined and when they do the handler is also configured as a default handler within Sensu.
 - It is then up to how you configure the underlying handler as to what sort of events it handles e.g. critical events only.
 
+## Uchiwa
+
+OPG Uchiwa was originally designed to run alongside a local Sensu API service on the same host (in the same docker-compose) called sensuapi. This was achieved by setting a number of environment variables for docker that defined the single end point in the `/etc/sensu/uchiwa.json` configuration file (see sample `env` file in this repository) and adding a `link` in the docker-compose file.
+
+This method has been preserved for backwards compatibility so that existing environments can run unchanged with the version that supports multiple end points. If none are defined it reverts to the default config.
+
+To configure multiple Sensu API end points (Data Centers) you need to define how many and then define each one using the following variables:
+
+- UCHIWA_SENSU_MULTIPLE (number of data centres minus one - indexing starts from zero)
+
+
+- UCHIWA_SENSU_DC_name_NAME
+- UCHIWA_SENSU_DC_name_HOST
+- UCHIWA_SENSU_DC_name_PORT
+- UCHIWA_SENSU_DC_name_SSL
+- UCHIWA_SENSU_DC_name_INSECURE
+- UCHIWA_SENSU_DC_name_USER
+- UCHIWA_SENSU_DC_name_PASS
+- UCHIWA_SENSU_DC_name_TIMEOUT
+
+where `name` is a unique name for each data center defined. The number defined should match `UCHIWA_SENSU_MULTIPLE` minus one (as the index of elements begins at zero`).
+
+It is VERY IMPORTANT that `UCHIWA_SENSU_MULTIPLE` accurately reflects the actual number of Data Centers defined and that each is fully defined. Anything not matching is likely to result in Uchiwa failing to start (either through confd errors or invalid json rendered).
+
+See the `env` file in this repository for examples of multiple data centers.
+
 # Running locally (e.g. boot2docker)
 
 This monitoring stack is designed to be run alongside the opg-core app stack (https://github.com/ministryofjustice/opg-core-docker) under a local `boot2docker` or native docker installation.

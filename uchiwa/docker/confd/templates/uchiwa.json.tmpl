@@ -1,5 +1,25 @@
 {
   "sensu": [
+{{ if exists "/uchiwa/sensu/multiple" }}
+  {{ $multiple := getv "/uchiwa/sensu/multiple" }}
+  {{ range $index, $element := lsdir "/uchiwa/sensu/dc" }}
+    {
+      "name": "{{ getv ( printf "/uchiwa/sensu/dc/%s/name" $element) }}",
+      "host": "{{ getv ( printf "/uchiwa/sensu/dc/%s/host" $element) }}",
+      "port": {{ getv ( printf "/uchiwa/sensu/dc/%s/port" $element) }},
+      "ssl": {{ getv ( printf "/uchiwa/sensu/dc/%s/ssl" $element) }},
+      "insecure": {{ getv ( printf "/uchiwa/sensu/dc/%s/insecure" $element) }},
+      "user": "{{ getv ( printf "/uchiwa/sensu/dc/%s/user" $element) }}",
+      "pass": "{{ getv ( printf "/uchiwa/sensu/dc/%s/pass" $element) }}",
+      "timeout": {{ getv ( printf "/uchiwa/sensu/dc/%s/timeout" $element) }}
+    {{ $check := (printf "%d" $index) }}
+    {{ if eq $multiple $check }}
+    }
+    {{ else }}
+    },
+    {{ end }}
+  {{ end }}
+{{ else }}
     {
       "name": "{{ getv "/uchiwa/sensu/name" }}",
       "host": "{{ getv "/uchiwa/sensu/host" }}",
@@ -8,12 +28,13 @@
       "insecure": {{ getv "/uchiwa/sensu/insecure" }},
       "user": "{{ getv "/uchiwa/sensu/user" }}",
       "pass": "{{ getv "/uchiwa/sensu/pass" }}",
-      "timeout": {{ getv "/uchiwa/sensu/timeout" }} 
+      "timeout": {{ getv "/uchiwa/sensu/timeout" }}
     }
+{{ end }}
   ],
   "uchiwa": {
     "host": "{{ getv "/uchiwa/host" }}",
     "port": {{ getv "/uchiwa/port" }},
-    "refresh": {{ getv "/uchiwa/refresh" }} 
+    "refresh": {{ getv "/uchiwa/refresh" }}
   }
 }

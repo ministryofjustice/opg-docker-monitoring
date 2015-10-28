@@ -21,4 +21,3 @@ ADD docker/confd /etc/confd
 EXPOSE 3000
 
 ENV OPG_SERVICE uchiwa
-ENV UCHIWA_MULTIPLE_SENSUS false

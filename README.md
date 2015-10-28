@@ -212,6 +212,8 @@ Environment variables for the AWS SNS handler:
 
 OPG Uchiwa was originally designed to run alongside a local Sensu API service on the same host (in the same docker-compose) called sensuapi. This was achieved by setting a number of environment variables for docker that defined the single end point in the `/etc/sensu/uchiwa.json` configuration file (see sample `env` file in this repository) and adding a `link` in the docker-compose file.
 
+This method has been preserved for backwards compatibility so that existing environments can run unchanged with the version that supports multiple end points. If none are defined it reverts to the default config.
+
 To configure multiple Sensu API end points (Data Centers) you need to define how many and then define each one using the following variables:
 
 - UCHIWA_SENSU_MULTIPLE (number of data centres minus one - indexing starts from zero)
@@ -227,6 +229,8 @@ To configure multiple Sensu API end points (Data Centers) you need to define how
 - UCHIWA_SENSU_DC_name_TIMEOUT
 
 where `name` is a unique name for each data center defined. The number defined should match `UCHIWA_SENSU_MULTIPLE` minus one (as the index of elements begins at zero`).
+
+It is VERY IMPORTANT that `UCHIWA_SENSU_MULTIPLE` accurately reflects the actual number of Data Centers defined and that each is fully defined. Anything not matching is likely to result in Uchiwa failing to start (either through confd errors or invalid json rendered).
 
 See the `env` file in this repository for examples of multiple data centers.
 

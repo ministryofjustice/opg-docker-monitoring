@@ -7,6 +7,7 @@ registry = registry.service.opg.digital
 containers = base nginx php-fpm monitoring sensu sensu-api sensu-client sensu-server uchiwa
 
 build:
+	semvertag tag ${newtag}
 	$(MAKE) -C grafana newtag=${newtag}
 	$(MAKE) -C graphite-statsd newtag=${newtag}
 	$(MAKE) -C logstash newtag=${newtag}

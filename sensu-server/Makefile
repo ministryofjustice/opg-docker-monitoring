@@ -1,6 +1,6 @@
 .PHONY: build
 newtag ?= latest
-image = registry.service.dsd.io/opguk/sensu-server
+image = registry.service.opg.digital/opguk/sensu-server
 
 build:
 	docker build -t "${image}:latest" .

@@ -1,6 +1,6 @@
 .PHONY: build
 newtag ?= latest
-image = registry.service.dsd.io/opguk/logstash
+image = registry.service.opg.digital/opguk/logstash
 
 build:
 	docker build -t "${image}:latest" .

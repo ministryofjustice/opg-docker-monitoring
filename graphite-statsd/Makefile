@@ -1,6 +1,6 @@
 .PHONY: build
 newtag ?= latest
-image = registry.service.dsd.io/opguk/graphite-statsd
+image = registry.service.opg.digital/opguk/graphite-statsd
 
 build:
 	docker build -t "${image}:latest" .

@@ -263,3 +263,11 @@ Using your docker/boot2docker host IP:
 If running the opg-core-docker app stack at the same time:
 
 - http://192.168.59.103:9200/_plugin/marvel   (Marvel dashboard for the app stack Elasticsearch)
+
+URLs based on `xip.io`:
+
+- https://kibana.192.168.59.103.xip.io
+- https://grafana.192.168.59.103.xip.io
+- https://graphite.192.168.59.103.xip.io
+- https://sensu.192.168.59.103.xip.io
+- https://example.192.168.59.103.xip.io       (Example app - touch this URL to generate some logs)

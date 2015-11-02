@@ -8,15 +8,18 @@ router:
     - grafana
     - graphite
     - uchiwa
+    - example
   environment:
     - OPG_NGINX_ROUTER_00_VHOST=kibana.*
-    - OPG_NGINX_ROUTER_00_TARGET=http://kibana
+    - OPG_NGINX_ROUTER_00_TARGET=http://kibana:5601
     - OPG_NGINX_ROUTER_01_VHOST=grafana.*
-    - OPG_NGINX_ROUTER_01_TARGET=http://grafana
+    - OPG_NGINX_ROUTER_01_TARGET=http://grafana:3000
     - OPG_NGINX_ROUTER_02_VHOST=graphite.*
     - OPG_NGINX_ROUTER_02_TARGET=http://graphite
     - OPG_NGINX_ROUTER_03_VHOST=sensu.*
-    - OPG_NGINX_ROUTER_03_TARGET=http://uchiwa
+    - OPG_NGINX_ROUTER_03_TARGET=http://uchiwa:3000
+    - OPG_NGINX_ROUTER_APP_VHOST=example.*
+    - OPG_NGINX_ROUTER_APP_TARGET=http://example
 
 
 kibana:
@@ -137,7 +140,7 @@ monitoringproxy:
 
 
 # example app feeding logs to the monitoring stack
-app:
+example:
   image: registry.service.dsd.io/opguk/nginx:latest
   links:
     - monitoringproxy:monitoring

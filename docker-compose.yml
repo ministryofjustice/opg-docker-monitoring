@@ -1,5 +1,5 @@
 router:
-  image: registry.service.dsd.io/opguk/nginx-router:latest
+  image: registry.service.opg.digital/opguk/nginx-router:latest
   ports:
     - 80:80
     - 443:443
@@ -20,7 +20,7 @@ router:
 
 
 kibana:
-  image: registry.service.dsd.io/opguk/kibana:latest
+  image: registry.service.opg.digital/opguk/kibana:latest
   environment:
     ELASTICSEARCH: elasticsearch
     ELASTICSEARCH_PORT_9200_TCP: 9200
@@ -33,7 +33,7 @@ kibana:
 
 # data on volume
 elasticsearch:
-  image: registry.service.dsd.io/opguk/elasticsearch:latest
+  image: registry.service.opg.digital/opguk/elasticsearch:latest
   ports:
     - 9201:9200
     - 9301:9300
@@ -42,7 +42,7 @@ elasticsearch:
 
 # user/pass: admin/admin
 grafana:
-  image: registry.service.dsd.io/opguk/grafana:latest
+  image: registry.service.opg.digital/opguk/grafana:latest
   ports:
     - 8002:3000
   links:
@@ -51,7 +51,7 @@ grafana:
 
 
 logstash:
-  image: registry.service.dsd.io/opguk/logstash:latest
+  image: registry.service.opg.digital/opguk/logstash:latest
   links:
     - redis
     - elasticsearch
@@ -68,7 +68,7 @@ redis:
 
 # data on volume
 graphite:
-  image: registry.service.dsd.io/opguk/graphite-statsd:latest
+  image: registry.service.opg.digital/opguk/graphite-statsd:latest
   ports:
     - 8003:80
     - 2003:2003
@@ -78,7 +78,7 @@ graphite:
 
 
 rabbitmq:
-  image: registry.service.dsd.io/opguk/rabbitmq:latest
+  image: registry.service.opg.digital/opguk/rabbitmq:latest
   ports:
     - 5672:5672
   env_file: ./env
@@ -86,7 +86,7 @@ rabbitmq:
 
 sensuserver:
 #  build: sensu-server
-  image: registry.service.dsd.io/opguk/sensu-server:latest
+  image: registry.service.opg.digital/opguk/sensu-server:latest
   links:
     - redis
     - rabbitmq
@@ -96,7 +96,7 @@ sensuserver:
 
 sensuapi:
 #  build: sensu-api
-  image: registry.service.dsd.io/opguk/sensu-api:latest
+  image: registry.service.opg.digital/opguk/sensu-api:latest
   links:
     - redis
     - rabbitmq
@@ -104,7 +104,7 @@ sensuapi:
 
 
 sensuclient:
-  image: registry.service.dsd.io/opguk/sensu-client:latest
+  image: registry.service.opg.digital/opguk/sensu-client:latest
   ports:
     - 3030:3030
   links:
@@ -115,7 +115,7 @@ sensuclient:
 
 
 uchiwa:
-  image: registry.service.dsd.io/opguk/uchiwa:latest
+  image: registry.service.opg.digital/opguk/uchiwa:latest
   links:
     - sensuapi
     - sensuserver
@@ -125,7 +125,7 @@ uchiwa:
 
 
 monitoringproxy:
-  image: registry.service.dsd.io/opguk/monitoring-proxy:latest
+  image: registry.service.opg.digital/opguk/monitoring-proxy:latest
   links:
     - redis
     - graphite
@@ -138,7 +138,7 @@ monitoringproxy:
 
 # example app feeding logs to the monitoring stack
 app:
-  image: registry.service.dsd.io/opguk/nginx:latest
+  image: registry.service.opg.digital/opguk/nginx:latest
   links:
     - monitoringproxy:monitoring
   ports:

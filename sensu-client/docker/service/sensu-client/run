@@ -1,3 +1,5 @@
 #!/bin/sh
 
-exec /opt/sensu/bin/sensu-client -vc /etc/sensu/config.json -d /etc/sensu/conf.d
+source /etc/default/sensu
+LOG_LEVEL=${LOG_LEVEL:-warn}
+exec /opt/sensu/bin/sensu-client -vc /etc/sensu/config.json -d /etc/sensu/conf.d --log_level ${LOG_LEVEL}

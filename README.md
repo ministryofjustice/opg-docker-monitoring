@@ -47,6 +47,18 @@ Listens for logs (pulls logs from redis queue) and ships them to elasticsearch:9
 
 Further log parsing will be added here at the moment we are also generating statsd metrics on incoming logs.
 
+There are three environment variables which can be used to point logstash at elasticsearch and use SSL (or plain text) for transmission:
+
+- OPG_LOGSTASH_ELASTICSEARCH_HOSTPORT
+- OPG_LOGSTASH_ELASTICSEARCH_SSL_ENABLED
+- OPG_LOGSTASH_ELASTICSEARCH_SSL_CERTIFICATE_VERIFICATION
+
+`OPG_LOGSTASH_ELASTICSEARCH_HOSTPORT` specifies the `host:port` combination to define the elasticsearch host/port. Default is `elasticsearch:9200`. This has been tested pointing to an AWS Elasticsearch cluster (using the AWS ES service).
+
+`OPG_LOGSTASH_ELASTICSEARCH_SSL_ENABLED` is a boolean value specifying if transport to elasticsearch should be over SSL. Default is `false`.
+
+`OPG_LOGSTASH_ELASTICSEARCH_SSL_CERTIFICATE_VERIFICATION` is a boolean value specifying if the server certificate should be validated or not. Default is `false` (as SSL default is `false` to preserve backwards compatibility with existing setup where transport is plain text).
+
 ## Graphite-Statsd
 
 A pre-configured graphite.

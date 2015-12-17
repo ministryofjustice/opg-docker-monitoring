@@ -1,9 +1,9 @@
-FROM registry.service.dsd.io/opguk/base:latest
+FROM registry.service.dsd.io/opguk/jre-8:latest
 
 RUN  apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 46095ACC8548582C1A2699A9D27D666CD88E42B4
 
-ENV  LOGSTASH_MAJOR 1.4
-ENV  LOGSTASH_VERSION 1.4.2-1-2c0f5a1
+ENV  LOGSTASH_MAJOR 2.1
+ENV  LOGSTASH_VERSION 1:2.1.1-1
 
 RUN  echo "deb http://packages.elasticsearch.org/logstash/${LOGSTASH_MAJOR}/debian stable main" > /etc/apt/sources.list.d/logstash.list
 
@@ -12,7 +12,12 @@ RUN  apt-get update && apt-get -y upgrade && \
      apt-get clean && apt-get autoremove && \
      rm -rf /var/lib/cache/* /var/lib/log/* /tmp/* /var/tmp/*
 
-ADD  docker/logstash /etc/logstash
+# Provide default values for confd
+ENV  OPG_LOGSTASH_ELASTICSEARCH_HOSTPORT elasticsearch:9200
+ENV  OPG_LOGSTASH_ELASTICSEARCH_SSL_ENABLED false
+ENV  OPG_LOGSTASH_ELASTICSEARCH_SSL_CERTIFICATE_VERIFICATION false
+
+ADD  docker/confd /etc/confd
 
 ADD  docker/service/logstash /etc/service/logstash
 RUN  chmod a+x /etc/service/logstash/run

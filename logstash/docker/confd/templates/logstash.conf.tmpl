@@ -33,13 +33,15 @@ filter {
   }
 }
 
+
 # 900_output_elasticsearch
-# TODO: swap for binary
 output {
-  elasticsearch_http {
-    host => "elasticsearch"
-    port => "9200"
-    flush_size => 1
+  elasticsearch {
+    hosts => [
+      {{if exists "/opg/logstash/elasticsearch/hostport" }}"{{ getv "/opg/logstash/elasticsearch/hostport" }}"{{else}}"elasticsearch:9200"{{end}}
+    ]
+    ssl => {{if exists "/opg/logstash/elasticsearch/ssl/enabled" }}{{ getv "/opg/logstash/elasticsearch/ssl/enabled" }}{{else}}false{{end}}
+    ssl_certificate_verification => {{if exists "/opg/logstash/elasticsearch/ssl/certificate/verification" }}{{ getv "/opg/logstash/elasticsearch/ssl/certificate/verification" }}{{else}}false{{end}}
   }
 }
 

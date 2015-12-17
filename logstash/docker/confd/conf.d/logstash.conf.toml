@@ -1,0 +1,6 @@
+[template]
+src = "logstash.conf.tmpl"
+dest = "/etc/logstash/logstash.conf"
+keys = [
+    "/opg/logstash",
+]

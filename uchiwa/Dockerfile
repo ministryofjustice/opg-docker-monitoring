@@ -16,7 +16,7 @@ RUN rm -rf /tmp/*
 ADD docker/service/uchiwa /etc/service/uchiwa
 RUN chmod a+x /etc/service/uchiwa/run
 
-ADD docker/confd /etc/confd
+#ADD docker/confd /etc/confd
 
 EXPOSE 3000
 

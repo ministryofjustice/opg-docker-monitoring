@@ -1,4 +1,4 @@
-FROM registry.service.dsd.io/opguk/jre-8:latest
+FROM registry.service.opg.digital/opguk/jre-8:latest
 
 RUN  apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 46095ACC8548582C1A2699A9D27D666CD88E42B4
 

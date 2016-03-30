@@ -1,4 +1,4 @@
-FROM registry.service.dsd.io/opguk/sensu:latest
+FROM registry.service.opg.digital/opguk/sensu:latest
 
 ENV SENSU_CLIENT_NAME localhost
 ENV SENSU_RABBITMQ_HOST rabbitmq

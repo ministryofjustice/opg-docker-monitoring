@@ -24,7 +24,8 @@ RUN chmod -R +x /etc/sensu/plugins/
 
 ADD docker/confd /etc/confd
 
-ADD docker/service/sensu-client /etc/service/sensu-client
-RUN chmod a+x /etc/service/sensu-client/run
+ADD docker/service/sensu-client /etc/sv/sensu-client
+RUN chmod a+x /etc/sv/sensu-client/run
+RUN ln -s /etc/sv/sensu-client /etc/service/
 
 ENV OPG_SERVICE sensu-client

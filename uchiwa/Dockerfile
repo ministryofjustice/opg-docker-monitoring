@@ -14,10 +14,8 @@ RUN dpkg -i uchiwa_${UCHIWA_VERSION}_amd64.deb
 RUN rm -rf /tmp/*
 
 ADD docker/service/uchiwa /etc/sv/uchiwa
-RUN chmod a+x /etc/sv/uchiwa/run
+RUN chmod a+x /etc/sv/uchiwa/run /etc/sv/uchiwa/log/run
 RUN ln -s /etc/sv/uchiwa /etc/service/
-
-#ADD docker/confd /etc/confd
 
 EXPOSE 3000
 

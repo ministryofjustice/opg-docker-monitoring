@@ -1,4 +1,4 @@
-FROM registry.service.dsd.io/opguk/sensu:latest
+FROM registry.service.opg.digital/opguk/sensu:latest
 
 ENV SENSU_REDIS_HOST redis
 ENV SENSU_REDIS_PORT 6379
@@ -14,8 +14,9 @@ ENV SENSU_RABBITMQ_SSL true
 
 ADD docker/confd /etc/confd
 
-ADD docker/service/sensu-api /etc/service/sensu-api
-RUN chmod a+x /etc/service/sensu-api/run
+ADD docker/service/sensu-api /etc/sv/sensu-api
+RUN chmod a+x /etc/sv/sensu-api/run
+RUN ln -s /etc/sv/sensu-api /etc/service/
 
 EXPOSE 4567
 

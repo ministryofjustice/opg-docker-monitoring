@@ -1,4 +1,4 @@
-FROM registry.service.dsd.io/opguk/base:latest
+FROM registry.service.opg.digital/opguk/base:latest
 
 # From https://uchiwa.io/#/download
 ENV UCHIWA_VERSION 0.9.1-1
@@ -13,10 +13,9 @@ RUN md5sum --check uchiwa.md5
 RUN dpkg -i uchiwa_${UCHIWA_VERSION}_amd64.deb
 RUN rm -rf /tmp/*
 
-ADD docker/service/uchiwa /etc/service/uchiwa
-RUN chmod a+x /etc/service/uchiwa/run
-
-ADD docker/confd /etc/confd
+ADD docker/service/uchiwa /etc/sv/uchiwa
+RUN chmod a+x /etc/sv/uchiwa/run /etc/sv/uchiwa/log/run
+RUN ln -s /etc/sv/uchiwa /etc/service/
 
 EXPOSE 3000
 

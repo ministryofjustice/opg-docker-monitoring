@@ -1,4 +1,4 @@
-FROM registry.service.dsd.io/opguk/base:latest
+FROM registry.service.opg.digital/opguk/base:latest
 
 
 RUN curl https://packagecloud.io/gpg.key | apt-key add -
@@ -14,8 +14,9 @@ RUN mkdir -p /usr/share/grafana/data && chown -R grafana:grafana /usr/share/graf
 VOLUME ["/usr/share/grafana/data"]
 WORKDIR /usr/share/grafana
 
-ADD  docker/service/grafana /etc/service/grafana
-RUN  chmod a+x /etc/service/grafana/run
+ADD  docker/service/grafana /etc/sv/grafana
+RUN  chmod a+x /etc/sv/grafana/run
+RUN ln -s /etc/sv/grafana /etc/service/
 
 ADD  docker/grafana /usr/share/grafana
 RUN  chown -R grafana:grafana /usr/share/grafana/

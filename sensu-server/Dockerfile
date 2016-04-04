@@ -1,4 +1,4 @@
-FROM registry.service.dsd.io/opguk/sensu:latest
+FROM registry.service.opg.digital/opguk/sensu:latest
 
 ENV SENSU_REDIS_HOST redis
 ENV SENSU_REDIS_PORT 6379
@@ -24,7 +24,8 @@ RUN /opt/sensu/embedded/bin/gem install sensu-plugins-pagerduty --version $SENSU
 
 ADD docker/confd /etc/confd
 
-ADD docker/service/sensu-server /etc/service/sensu-server
-RUN chmod a+x /etc/service/sensu-server/run
+ADD docker/service/sensu-server /etc/sv/sensu-server
+RUN chmod a+x /etc/sv/sensu-server/run
+RUN ln -s /etc/sv/sensu-server /etc/service/
 
 ENV OPG_SERVICE sensu-server

@@ -1,4 +1,4 @@
-FROM registry.service.dsd.io/opguk/base:latest
+FROM registry.service.opg.digital/opguk/base:latest
 
 RUN  apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 46095ACC8548582C1A2699A9D27D666CD88E42B4
 
@@ -23,24 +23,27 @@ RUN  pip install setproctitle
 RUN  pip install raven
 RUN  pip install gunicorn
 
-ADD  docker/service/redis /etc/service/redis
-RUN  chmod a+x /etc/service/redis/run
+ADD  docker/service/redis /etc/sv/redis
+RUN  chmod a+x /etc/sv/redis/run
+RUN ln -s /etc/sv/redis /etc/service/
 
 ADD  docker/redis /etc/redis
 RUN  mkdir -p /data/redis && chown -R redis /data/redis
 RUN  mkdir -p /var/run/redis && chown -R redis /var/run/redis
 RUN  mkdir -p /var/log/redis && chown -R redis /var/log/redis
 
-ADD  docker/service/logstash /etc/service/logstash
-RUN  chmod a+x /etc/service/logstash/run
+ADD  docker/service/logstash /etc/sv/logstash
+RUN  chmod a+x /etc/sv/logstash/run
+RUN ln -s /etc/sv/logstash /etc/service/
 
 RUN  useradd bucky
 RUN  mkdir -p /var/lib/bucky && chown -R bucky:bucky /var/lib/bucky
 
 RUN  mkdir -p /etc/bucky
 
-ADD  docker/service/bucky /etc/service/bucky
-RUN  chmod a+x /etc/service/bucky/run
+ADD  docker/service/bucky /etc/sv/bucky
+RUN  chmod a+x /etc/sv/bucky/run
+RUN ln -s /etc/sv/bucky /etc/service/
 
 VOLUME /data
 

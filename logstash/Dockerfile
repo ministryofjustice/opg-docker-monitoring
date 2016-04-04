@@ -1,4 +1,4 @@
-FROM registry.service.dsd.io/opguk/jre-8:latest
+FROM registry.service.opg.digital/opguk/jre-8:latest
 
 RUN  apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 46095ACC8548582C1A2699A9D27D666CD88E42B4
 
@@ -19,8 +19,9 @@ ENV  OPG_LOGSTASH_ELASTICSEARCH_SSL_CERTIFICATE_VERIFICATION false
 
 ADD  docker/confd /etc/confd
 
-ADD  docker/service/logstash /etc/service/logstash
-RUN  chmod a+x /etc/service/logstash/run
+ADD  docker/service/logstash /etc/sv/logstash
+RUN  chmod a+x /etc/sv/logstash/run
+RUN ln -s /etc/sv/logstash /etc/service/
 
 #syslog input out of namespace
 EXPOSE 2514

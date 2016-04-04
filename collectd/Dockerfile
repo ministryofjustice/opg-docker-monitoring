@@ -1,4 +1,4 @@
-FROM registry.service.dsd.io/opguk/base:latest
+FROM registry.service.opg.digital/opguk/base:latest
 
 RUN  apt-get update && apt-get -y upgrade && \
      apt-get install -y collectd && \
@@ -6,8 +6,9 @@ RUN  apt-get update && apt-get -y upgrade && \
      rm -rf /var/lib/apt/* /var/lib/dpkg/*-old /var/lib/dpkg/info/* /var/lib/cache/* /var/lib/log/* /tmp/* /var/tmp/*
 
 
-ADD  docker/service/collectd /etc/service/collectd
-RUN  chmod a+x /etc/service/collectd/run
+ADD  docker/service/collectd /etc/sv/collectd
+RUN  chmod a+x /etc/sv/collectd/run
+RUN ln -s /etc/sv/collectd /etc/service/
 
 ADD  docker/collectd /etc/collectd
 

@@ -2,8 +2,8 @@
 
 name=uchiwa
 program=/opt/uchiwa/bin/uchiwa
-args="-c /etc/sensu/uchiwa.json -p /opt/uchiwa/src/public"
+args="-c /config/config.json -p /opt/uchiwa/src/public"
 pidfile="/var/run/$name.pid"
 
 # Run the program!
-su -s /bin/sh uchiwa -c "cd /opt/uchiwa/src && exec \"$program\" $args" >> /var/log/$name.log 2> /var/log/$name.err &
+exec chpst -u uchiwa ${program} ${args}

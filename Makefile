@@ -2,7 +2,7 @@
 
 currenttag = $(shell semvertag latest)
 newtag = $(shell semvertag bump patch)
-registryUrl = registry.service.opg.digital
+registryUrl = registry.service.dsd.io
 
 containers = base nginx php-fpm monitoring sensu sensu-api sensu-client sensu-server uchiwa
 

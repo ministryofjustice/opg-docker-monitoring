@@ -1,6 +1,6 @@
 .PHONY: build test
 newtag ?= latest
-registryUrl ?= registry.service.opg.digital
+registryUrl ?= registry.service.dsd.io
 image = ${registryUrl}/opguk/sensu-api
 
 build:

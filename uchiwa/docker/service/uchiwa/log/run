@@ -1,2 +1,9 @@
 #!/bin/sh
-exec svlogd -tt /var/log/uchiwa
+
+LOG_DIR=/var/log/uchiwa
+name=uchiwa
+
+mkdir -p ${LOG_DIR}
+chown ${name} ${LOG_DIR}
+
+exec svlogd -tt ${LOG_DIR}

@@ -2,7 +2,7 @@
 
 name=uchiwa
 program=/opt/uchiwa/bin/uchiwa
-args="-c /config/config.json -p /opt/uchiwa/src/public"
+args="-c /etc/sensu/uchiwa.json -p /opt/uchiwa/src/public"
 pidfile="/var/run/$name.pid"
 
 # Run the program!

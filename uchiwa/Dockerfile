@@ -17,6 +17,8 @@ ADD docker/service/uchiwa /etc/sv/uchiwa
 RUN chmod a+x /etc/sv/uchiwa/run /etc/sv/uchiwa/log/run
 RUN ln -s /etc/sv/uchiwa /etc/service/
 
+ADD docker/confd /etc/confd
+
 EXPOSE 3000
 
 ENV OPG_SERVICE uchiwa

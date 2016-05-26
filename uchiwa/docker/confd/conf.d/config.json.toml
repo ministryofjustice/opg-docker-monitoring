@@ -1,0 +1,6 @@
+[template]
+src = "uchiwa.json.tmpl"
+dest = "/etc/sensu/uchiwa.json"
+keys = [
+    "/uchiwa",
+]

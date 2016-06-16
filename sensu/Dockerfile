@@ -1,13 +1,17 @@
 FROM registry.service.dsd.io/opguk/base:latest
 
-ADD http://repos.sensuapp.org/apt/pubkey.gpg /tmp/pubkey.gpg
+ENV SENSU_VERSION 0.23.3-1
 
+# Copy/pasted from: https://sensuapp.org/docs/latest/platforms/sensu-on-ubuntu-debian.html#sensu-core
 RUN \
-  apt-key add /tmp/pubkey.gpg \
-  && echo 'deb http://repos.sensuapp.org/apt sensu main' > /etc/apt/sources.list.d/sensu.list \
+  wget -q http://repositories.sensuapp.org/apt/pubkey.gpg -O- | sudo apt-key add - \
+  && echo "deb     http://repositories.sensuapp.org/apt sensu main" | sudo tee /etc/apt/sources.list.d/sensu.list \
   && apt-get update \
   && apt-get upgrade -y \
-  && apt-get install -y sensu
+  && apt-get install -y sensu=$SENSU_VERSION \
+  && apt-get clean \
+  && apt-get autoremove \
+  && rm -rf /var/lib/cache/* /var/lib/log/* /tmp/* /var/tmp/*
 
 ADD docker/confd /etc/confd
 

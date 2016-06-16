@@ -1,6 +1,6 @@
 FROM registry.service.dsd.io/opguk/base:latest
 
-ENV SENSU_VERSION 0.23.3-1
+ENV SENSU_VERSION 0.25.1-1
 
 # Copy/pasted from: https://sensuapp.org/docs/latest/platforms/sensu-on-ubuntu-debian.html#sensu-core
 RUN \

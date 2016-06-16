@@ -11,10 +11,7 @@ ENV SENSU_RABBITMQ_PASSWORD sensu
 ENV SENSU_API_HOST sensuapi
 ENV SENSU_API_PORT 4567
 
-RUN sensu-install --plugins \
-    aws, \
-    pagerduty, \
-    slack
+RUN sensu-install --plugins aws,pagerduty,slack
 
 ADD docker/confd /etc/confd
 

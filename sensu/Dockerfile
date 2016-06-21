@@ -2,6 +2,16 @@ FROM registry.service.dsd.io/opguk/base:latest
 
 ENV SENSU_VERSION 0.25.1-1
 
+ENV SENSU_RABBITMQ_HOST rabbitmq
+ENV SENSU_RABBITMQ_PORT 5672
+ENV SENSU_RABBITMQ_VHOST /sensu
+ENV SENSU_RABBITMQ_USER sensu
+ENV SENSU_RABBITMQ_PASSWORD sensu
+
+ENV SENSU_RABBITMQ_SSL true
+ENV SENSU_RABBITMQ_SSL_CHAIN  /etc/ssl/cert.pem
+ENV SENSU_RABBITMQ_SSL_PRIVKEY  /etc/ssl/key.pem
+
 # Copy/pasted from: https://sensuapp.org/docs/latest/platforms/sensu-on-ubuntu-debian.html#sensu-core
 RUN \
   wget -q http://repositories.sensuapp.org/apt/pubkey.gpg -O- | sudo apt-key add - \

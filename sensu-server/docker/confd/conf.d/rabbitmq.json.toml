@@ -1,7 +1,0 @@
-[template]
-prefix = "/sensu"
-src = "rabbitmq.json.tmpl"
-dest = "/etc/sensu/conf.d/rabbitmq.json"
-keys = [
-    "/rabbitmq",
-]

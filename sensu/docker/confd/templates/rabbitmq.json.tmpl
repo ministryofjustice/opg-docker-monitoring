@@ -4,9 +4,11 @@
     "ssl": {
       "cert_chain_file": {{getv "/rabbitmq/ssl/chain"}},
       "private_key_file": {{getv "/rabbitmq/ssl/privkey"}}
+      "port": {{getv "/rabbitmq/ssl/port"}},
     },
-    {{ end }}
+    {{ else }}
     "port": {{getv "/rabbitmq/port"}},
+    {{ end }}
     "host": "{{getv "/rabbitmq/host"}}",
     "vhost": "{{getv "/rabbitmq/vhost"}}",
     "user": "{{getv "/rabbitmq/user"}}",

@@ -1,7 +1,7 @@
 FROM registry.service.dsd.io/opguk/sensu:latest
 
 ENV SENSU_CLIENT_NAME localhost
-ENV SENSU_RABBITMQ_HOST rabbitmq
+ENV SENSU_RABBITMQ_HOST monitoring
 ENV SENSU_RABBITMQ_PORT 5672
 ENV SENSU_RABBITMQ_VHOST /sensu
 ENV SENSU_RABBITMQ_USER sensu

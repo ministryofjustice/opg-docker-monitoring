@@ -10,7 +10,7 @@ ONBUILD ENV SENSU_RABBITMQ_PASSWORD sensu
 ONBUILD ENV SENSU_RABBITMQ_SSL true
 ONBUILD ENV SENSU_RABBITMQ_SSL_CHAIN  /etc/ssl/cert.pem
 ONBUILD ENV SENSU_RABBITMQ_SSL_PRIVKEY  /etc/ssl/key.pem
-ONBUILD ENV SENSU_RABBITMQ_SSL_PROT 5671
+ONBUILD ENV SENSU_RABBITMQ_SSL_PORT 5671
 
 # Copy/pasted from: https://sensuapp.org/docs/latest/platforms/sensu-on-ubuntu-debian.html#sensu-core
 RUN \

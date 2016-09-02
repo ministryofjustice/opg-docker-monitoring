@@ -1,4 +1,4 @@
-FROM registry.service.dsd.io/opguk/base:latest
+FROM registry.service.opg.digital/opguk/base:latest
 
 # From https://uchiwa.io/#/download
 ENV UCHIWA_VERSION 0.9.1-1

@@ -3,8 +3,7 @@ FROM registry.service.dsd.io/opguk/sensu:latest
 ENV SENSU_CLIENT_NAME localhost
 
 RUN sensu-install --plugins cpu-checks,disk-checks,io-checks,network-checks,process-checks
-RUN sensu-install --plugins aws,docker,elasticsearch,http,mongodb,rabbitmq,redis,uchiwa
-
+RUN sensu-install --plugins aws,docker,elasticsearch,http,mongodb,rabbitmq,redis,uchiwa,beanstalk
 ADD docker/sensu-client/plugins/* /etc/sensu/plugins/
 RUN chmod -R +x /etc/sensu/plugins/
 

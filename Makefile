@@ -1,51 +1,38 @@
 .PHONY: build push pull
 
-currenttag = $(shell semvertag latest)
-#newtag = $(shell semvertag bump patch)
-newtag = latest
-registryUrl = registry.service.opg.digital
+currenttag := $(shell semvertag latest)
+newtag := $(shell semvertag bump patch)
 
-containers = base nginx php-fpm monitoring sensu sensu-api sensu-client sensu-server uchiwa
+registryUrl ?= registry.service.opg.digital
+oldRegistryUrl ?= registry.service.dsd.io
+dockerVersion := $(shell docker --version | cut -f3 -d' '  | grep '^1\.[0-9]\.')
 
-build:
-#	semvertag tag ${newtag}
-	$(MAKE) -C grafana newtag=${newtag}
-	$(MAKE) -C graphite-statsd newtag=${newtag}
-	$(MAKE) -C logstash newtag=${newtag}
-	$(MAKE) -C monitoring-proxy newtag=${newtag}
-	$(MAKE) -C sensu newtag=${newtag}
-	$(MAKE) -C sensu-api newtag=${newtag}
-	$(MAKE) -C sensu-client newtag=${newtag}
-	$(MAKE) -C sensu-server newtag=${newtag}
-	$(MAKE) -C uchiwa newtag=${newtag}
+containers = grafana graphite-statsd logstash monitoring-proxy sensu sensu-api sensu-client sensu-server uchiwa
+
+build: $(containers) dockerVersion=$(dockerVersion)
+
+$(containers):
+    $(MAKE) -C $i newtag=${newtag}
 
 push:
-	docker push ${registryUrl}/opguk/grafana:${currenttag}
-	docker push ${registryUrl}/opguk/grafana:latest
-	docker push ${registryUrl}/opguk/graphite-statsd:${currenttag}
-	docker push ${registryUrl}/opguk/graphite-statsd:latest
-	docker push ${registryUrl}/opguk/logstash:${currenttag}
-	docker push ${registryUrl}/opguk/logstash:latest
-	docker push ${registryUrl}/opguk/monitoring-proxy:${currenttag}
-	docker push ${registryUrl}/opguk/monitoring-proxy:latest
-	docker push ${registryUrl}/opguk/sensu:${currenttag}
-	docker push ${registryUrl}/opguk/sensu:latest
-	docker push ${registryUrl}/opguk/sensu-api:${currenttag}
-	docker push ${registryUrl}/opguk/sensu-api:latest
-	docker push ${registryUrl}/opguk/sensu-client:${currenttag}
-	docker push ${registryUrl}/opguk/sensu-client:latest
-	docker push ${registryUrl}/opguk/sensu-server:${currenttag}
-	docker push ${registryUrl}/opguk/sensu-server:latest
-	docker push ${registryUrl}/opguk/uchiwa:${currenttag}
-	docker push ${registryUrl}/opguk/uchiwa:latest
+    for i in $(containers); do \
+        docker push ${registryUrl}/opguk/$$i:${newtag}; \
+        docker push ${oldRegistryUrl}/opguk/$$i:${newtag}; \
+    done
+ifeq ($(tagrepo),yes)
+	semvertag tag $(newtag)
+else
+	@echo -e Not tagging repo
+endif
 
 pull:
-	docker pull ${registryUrl}/opguk/grafana
-	docker pull ${registryUrl}/opguk/graphite-statsd
-	docker pull ${registryUrl}/opguk/logstash
-	docker pull ${registryUrl}/opguk/monitoring-proxy
-	docker pull ${registryUrl}/opguk/sensu
-	docker pull ${registryUrl}/opguk/sensu-api
-	docker pull ${registryUrl}/opguk/sensu-client
-	docker pull ${registryUrl}/opguk/sensu-server
-	docker pull ${registryUrl}/opguk/uchiwa
+	for i in $(containers); do \
+        @docker pull ${registryUrl}/opguk/grafana:${currenttag}; \
+
+clean:
+	for i in $(CLEAN_CONTAINERS); do \
+       	    @docker rmi $(registryUrl)/opguk/$$i:$(newtag) || true ; \
+       	    @docker rmi $(registryUrl)/opguk/$$i:latest || true ; \
+   	done
+
+all: showinfo build push clean

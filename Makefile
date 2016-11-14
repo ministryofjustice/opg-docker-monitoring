@@ -12,7 +12,7 @@ containers = grafana graphite-statsd logstash monitoring-proxy sensu sensu-api s
 build: $(containers)
 
 $(containers):
-	$(MAKE) -C $i newtag=${newtag} dockerVersion=$(dockerVersion)
+	$(MAKE) -C $@ newtag=${newtag} dockerVersion=$(dockerVersion)
 
 push:
 	for i in $(containers); do \
@@ -27,12 +27,25 @@ endif
 
 pull:
 	for i in $(containers); do \
-		@docker pull ${registryUrl}/opguk/grafana:${currenttag}; \
+		@docker pull ${registryUrl}/opguk/$$i:${currenttag}; \
 
 clean:
 	for i in $(CLEAN_CONTAINERS); do \
-        @docker rmi $(registryUrl)/opguk/$$i:$(newtag) || true ; \
-        @docker rmi $(registryUrl)/opguk/$$i:latest || true ; \
+		@docker rmi $(registryUrl)/opguk/$$i:$(newtag) || true ; \
+		@docker rmi $(registryUrl)/opguk/$$i:latest || true ; \
 	done
+
+showinfo:
+	@echo Docker version: $(dockerVersion)
+	@echo Registry: $(registryUrl)
+	@echo Newtag: $(newtag)
+	@echo Current Tag: $(currenttag)
+	@echo Core Container List: $(CORE_CONTAINERS)
+	@echo Container List: $(CHILD_CONTAINERS)
+	@echo Clean Container List: $(CLEAN_CONTAINERS)
+ifeq ($(tagrepo),yes)
+	@echo Tagging repo: $(tagrepo)
+endif
+
 
 all: showinfo build push clean

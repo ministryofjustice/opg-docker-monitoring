@@ -1,4 +1,4 @@
-.PHONY: build push pull
+containers = grafana graphite-statsd logstash monitoring-proxy sensu sensu-api sensu-client sensu-server uchiwa
 
 currenttag := $(shell semvertag latest)
 newtag := $(shell semvertag bump patch)
@@ -7,7 +7,7 @@ registryUrl ?= registry.service.opg.digital
 oldRegistryUrl ?= registry.service.dsd.io
 dockerVersion := $(shell docker --version | cut -f3 -d' '  | grep '^1\.[0-9]\.')
 
-containers = grafana graphite-statsd logstash monitoring-proxy sensu sensu-api sensu-client sensu-server uchiwa
+.PHONY: build push pull $(containers) clean showinfo
 
 build: $(containers)
 
@@ -40,9 +40,7 @@ showinfo:
 	@echo Registry: $(registryUrl)
 	@echo Newtag: $(newtag)
 	@echo Current Tag: $(currenttag)
-	@echo Core Container List: $(CORE_CONTAINERS)
-	@echo Container List: $(CHILD_CONTAINERS)
-	@echo Clean Container List: $(CLEAN_CONTAINERS)
+	@echo Container List: $(containers)
 ifeq ($(tagrepo),yes)
 	@echo Tagging repo: $(tagrepo)
 endif

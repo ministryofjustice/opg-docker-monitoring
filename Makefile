@@ -29,14 +29,15 @@ endif
 
 pull:
 	for i in $(containers); do \
-		@docker pull ${registryUrl}/opguk/$$i:${currenttag}; \
+		docker pull ${registryUrl}/opguk/$$i:${currenttag}; \
+	done
 
 clean:
 	for i in $(containers); do \
-		@docker rmi $(registryUrl)/opguk/$$i:$(newtag) || true ; \
-		@docker rmi $(oldRegistryUrl)/opguk/$$i:$(newtag) || true ; \
-		@docker rmi $(oldRegistryUrl)/opguk/$$i || true ; \
-		@docker rmi $(registryUrl)/opguk/$$i || true ; \
+		docker rmi $(registryUrl)/opguk/$$i:$(newtag) || true ; \
+		docker rmi $(oldRegistryUrl)/opguk/$$i:$(newtag) || true ; \
+		docker rmi $(oldRegistryUrl)/opguk/$$i || true ; \
+		docker rmi $(registryUrl)/opguk/$$i || true ; \
 	done
 
 showinfo:

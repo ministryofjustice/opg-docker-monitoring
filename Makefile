@@ -5,7 +5,7 @@ newtag := $(shell semvertag bump patch)
 
 registryUrl ?= registry.service.opg.digital
 oldRegistryUrl ?= registry.service.dsd.io
-dockerVersion := $(shell docker --version | cut -f3 -d' '  | grep '^1\.[0-9]\.')
+dockerVersion := $(shell docker --version | cut -f3 -d' '  | cut -f1 -d',')
 
 .PHONY: build push pull $(containers) clean showinfo
 

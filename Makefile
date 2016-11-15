@@ -16,7 +16,9 @@ $(containers):
 
 push:
 	for i in $(containers); do \
+		docker push ${registryUrl}/opguk/$$i; \
 		docker push ${registryUrl}/opguk/$$i:${newtag}; \
+		docker push ${oldRegistryUrl}/opguk/$$i; \
 		docker push ${oldRegistryUrl}/opguk/$$i:${newtag}; \
 	done
 ifeq ($(tagrepo),yes)
@@ -30,7 +32,7 @@ pull:
 		@docker pull ${registryUrl}/opguk/$$i:${currenttag}; \
 
 clean:
-	for i in $(CLEAN_CONTAINERS); do \
+	for i in $(containers); do \
 		@docker rmi $(registryUrl)/opguk/$$i:$(newtag) || true ; \
 		@docker rmi $(registryUrl)/opguk/$$i:latest || true ; \
 	done

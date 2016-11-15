@@ -34,7 +34,9 @@ pull:
 clean:
 	for i in $(containers); do \
 		@docker rmi $(registryUrl)/opguk/$$i:$(newtag) || true ; \
-		@docker rmi $(registryUrl)/opguk/$$i:latest || true ; \
+		@docker rmi $(oldRegistryUrl)/opguk/$$i:$(newtag) || true ; \
+		@docker rmi $(oldRegistryUrl)/opguk/$$i || true ; \
+		@docker rmi $(registryUrl)/opguk/$$i || true ; \
 	done
 
 showinfo:

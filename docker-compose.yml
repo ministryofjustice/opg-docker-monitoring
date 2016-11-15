@@ -1,5 +1,5 @@
 router:
-  image: registry.service.opg.digital/opguk/nginx-router:latest
+  image: registry.service.opg.digital/opguk/nginx-router
   ports:
     - 80:80
     - 443:443
@@ -23,7 +23,7 @@ router:
 
 
 kibana:
-  image: registry.service.opg.digital/opguk/kibana:latest
+  image: registry.service.opg.digital/opguk/kibana
   environment:
     ELASTICSEARCH: elasticsearch
     ELASTICSEARCH_PORT_9200_TCP: 9200
@@ -36,7 +36,7 @@ kibana:
 
 # data on volume
 elasticsearch:
-  image: registry.service.opg.digital/opguk/elasticsearch:latest
+  image: registry.service.opg.digital/opguk/elasticsearch
   ports:
     - 9201:9200
     - 9301:9300
@@ -45,7 +45,7 @@ elasticsearch:
 
 # user/pass: admin/admin
 grafana:
-  image: registry.service.opg.digital/opguk/grafana:latest
+  image: registry.service.opg.digital/opguk/grafana
   ports:
     - 8002:3000
   links:
@@ -54,7 +54,7 @@ grafana:
 
 
 logstash:
-  image: registry.service.opg.digital/opguk/logstash:latest
+  image: registry.service.opg.digital/opguk/logstash
   links:
     - redis
     - elasticsearch
@@ -63,7 +63,7 @@ logstash:
 
 
 redis:
-  image: redis:latest
+  image: redis
   ports:
     - 6379:6379
   env_file: ./env
@@ -71,7 +71,7 @@ redis:
 
 # data on volume
 graphite:
-  image: registry.service.opg.digital/opguk/graphite-statsd:latest
+  image: registry.service.opg.digital/opguk/graphite-statsd
   ports:
     - 8003:80
     - 2003:2003
@@ -81,7 +81,7 @@ graphite:
 
 
 rabbitmq:
-  image: registry.service.opg.digital/opguk/rabbitmq:latest
+  image: registry.service.opg.digital/opguk/rabbitmq
   ports:
     - 5672:5672
   env_file: ./env
@@ -89,7 +89,7 @@ rabbitmq:
 
 sensuserver:
 #  build: sensu-server
-  image: registry.service.opg.digital/opguk/sensu-server:latest
+  image: registry.service.opg.digital/opguk/sensu-server
   links:
     - redis
     - rabbitmq
@@ -99,7 +99,7 @@ sensuserver:
 
 sensuapi:
 #  build: sensu-api
-  image: registry.service.opg.digital/opguk/sensu-api:latest
+  image: registry.service.opg.digital/opguk/sensu-api
   links:
     - redis
     - rabbitmq
@@ -107,7 +107,7 @@ sensuapi:
 
 
 sensuclient:
-  image: registry.service.opg.digital/opguk/sensu-client:latest
+  image: registry.service.opg.digital/opguk/sensu-client
   ports:
     - 3030:3030
   links:
@@ -118,7 +118,7 @@ sensuclient:
 
 
 uchiwa:
-  image: registry.service.opg.digital/opguk/uchiwa:latest
+  image: registry.service.opg.digital/opguk/uchiwa
   links:
     - sensuapi
     - sensuserver
@@ -128,7 +128,7 @@ uchiwa:
 
 
 monitoringproxy:
-  image: registry.service.opg.digital/opguk/monitoring-proxy:latest
+  image: registry.service.opg.digital/opguk/monitoring-proxy
   links:
     - redis
     - graphite
@@ -141,7 +141,7 @@ monitoringproxy:
 
 # example app feeding logs to the monitoring stack
 example:
-  image: registry.service.opg.digital/opguk/nginx:latest
+  image: registry.service.opg.digital/opguk/nginx
   links:
     - monitoringproxy:monitoring
   ports:

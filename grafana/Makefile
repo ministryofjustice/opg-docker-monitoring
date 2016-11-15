@@ -1,5 +1,5 @@
 .PHONY: build
-newtag ?= latest
+
 registryUrl ?= registry.service.opg.digital
 oldRegistryUrl ?= registry.service.dsd.io
 

@@ -1,8 +1,12 @@
 .PHONY: build
-newtag ?= latest
-registryUrl ?= registry.service.dsd.io
-image = ${registryUrl}/opguk/logstash
+
+registryUrl ?= registry.service.opg.digital
+oldRegistryUrl ?= registry.service.dsd.io
+
+image = opguk/logstash
 
 build:
-	docker build -t "${image}:latest" .
-	docker tag "${image}:latest" "${image}:${newtag}"
+	docker build -t "$(registryUrl)/$(image)" .
+	docker tag "$(registryUrl)/$(image)" "$(registryUrl)/$(image):$(newtag)"
+	docker tag "$(registryUrl)/$(image)" "$(oldRegistryUrl)/$(image)"
+	docker tag "$(registryUrl)/$(image)" "$(oldRegistryUrl)/$(image):$(newtag)"

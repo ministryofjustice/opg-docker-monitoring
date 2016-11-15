@@ -1,8 +1,12 @@
 .PHONY: build
-newtag ?= latest
-registryUrl ?= registry.service.dsd.io
-image = ${registryUrl}/opguk/monitoring-proxy
+
+registryUrl ?= registry.service.opg.digital
+oldRegistryUrl ?= registry.service.dsd.io
+
+image = opguk/monitoring-proxy
 
 build:
-	docker build -t "${image}:latest" .
-	docker tag "${image}:latest" "${image}:${newtag}"
+	docker build -t "$(registryUrl)/$(image)" .
+	docker tag "$(registryUrl)/$(image)" "$(registryUrl)/$(image):$(newtag)"
+	docker tag "$(registryUrl)/$(image)" "$(oldRegistryUrl)/$(image)"
+	docker tag "$(registryUrl)/$(image)" "$(oldRegistryUrl)/$(image):$(newtag)"

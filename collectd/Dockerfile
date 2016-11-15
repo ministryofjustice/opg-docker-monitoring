@@ -1,4 +1,4 @@
-FROM registry.service.dsd.io/opguk/base:latest
+FROM registry.service.opg.digital/opguk/base
 
 RUN  apt-get update && apt-get -y upgrade && \
      apt-get install -y collectd && \

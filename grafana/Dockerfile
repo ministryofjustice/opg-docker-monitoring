@@ -1,4 +1,4 @@
-FROM registry.service.opg.digital/opguk/base:latest
+FROM registry.service.opg.digital/opguk/base
 
 
 RUN curl https://packagecloud.io/gpg.key | apt-key add -

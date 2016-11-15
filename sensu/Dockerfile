@@ -17,7 +17,7 @@ RUN \
   wget -q http://repositories.sensuapp.org/apt/pubkey.gpg -O- | sudo apt-key add - \
   && echo "deb     http://repositories.sensuapp.org/apt sensu main" | tee /etc/apt/sources.list.d/sensu.list \
   && apt-get update \
-  && apt-get install -y sensu=$SENSU_VERSION \
+  && apt-get install -y sensu \
   && apt-get clean \
   && apt-get autoremove \
   && rm -rf /var/lib/cache/* /var/lib/log/* /tmp/* /var/tmp/*

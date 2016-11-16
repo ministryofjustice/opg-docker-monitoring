@@ -5,14 +5,13 @@ newtag := $(shell semvertag bump patch)
 
 registryUrl ?= registry.service.opg.digital
 oldRegistryUrl ?= registry.service.dsd.io
-dockerVersion := $(shell docker --version | cut -f3 -d' '  | grep '^1\.[0-9]\.')
 
 .PHONY: build push pull $(containers) clean showinfo
 
 build: $(containers)
 
 $(containers):
-	$(MAKE) -C $@ newtag=${newtag} dockerVersion=$(dockerVersion)
+	$(MAKE) -C $@ newtag=${newtag}
 
 push:
 	for i in $(containers); do \
@@ -41,7 +40,6 @@ clean:
 	done
 
 showinfo:
-	@echo Docker version: $(dockerVersion)
 	@echo Registry: $(registryUrl)
 	@echo Newtag: $(newtag)
 	@echo Current Tag: $(currenttag)

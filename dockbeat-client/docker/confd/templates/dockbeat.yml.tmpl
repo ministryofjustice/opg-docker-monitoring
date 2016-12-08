@@ -1,0 +1,24 @@
+dockbeat:
+  period: {{ getv "/beats/dockbeat/period" }}
+  socket: {{ getv "/beats/dockbeat/socket" }}
+  {{ if exists "/beats/dockbeat/tls"}}
+  tls:
+    enable: {{ getv "/beats/dockbeat/tls" }}
+    ca_path: {{ getv "/beats/dockbeat/capath" }}
+    cert_path: {{ getv "/beats/dockbeat/certpath" }}
+    key_path: {{ getv "/beats/dockbeat/keypath" }}#
+  {{ endif }}
+
+  stats:
+    container: true
+    net: true
+    memory: true
+    blkio: true
+    cpu: true
+
+output:
+  elasticsearch:
+    hosts: ["{{ getv "/beats/dockbeat/monitoring/host" }}"]
+    protocol: "https"
+
+

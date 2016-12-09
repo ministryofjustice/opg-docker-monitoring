@@ -33,6 +33,8 @@ kibana:
     - elasticsearch
   env_file: ./env
 
+elasticsearchshareddata:
+  image: registry.service.opg.digital/opguk/elasticsearch-shared-data
 
 # data on volume
 elasticsearch:
@@ -41,7 +43,10 @@ elasticsearch:
     - 9201:9200
     - 9301:9300
   env_file: ./env
-
+  volumes:
+    - /tmp/elasticsearchshareddata
+  volumes_from:
+    - elasticsearchshareddata
 
 # user/pass: admin/admin
 grafana:

@@ -39,8 +39,8 @@ RUN mkdir -p /etc/dockbeat/ \
     && cp $GOPATH/src/github.com/ingensi/dockbeat/dockbeat /usr/local/bin/dockbeat
 
 ADD docker/confd /etc/confd
+ADD docker/service/dockbeat /etc/sv/dockbeat
+RUN chmod -R a+x /etc/sv/dockbeat/run
+RUN  ln -s /etc/sv/dockbeat /etc/service/
 
-WORKDIR /etc/dockbeat
-ENTRYPOINT dockbeat
-
-CMD [ "-c", "dockbeat.yml", "-e" ]
+ENV OPG_SERVICE dockbeat

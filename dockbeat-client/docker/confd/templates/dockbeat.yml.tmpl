@@ -19,7 +19,7 @@ dockbeat:
 output:
   elasticsearch:
     hosts: ["{{ getv "/beats/dockbeat/monitoring/host" }}"]
-    protocol: "https"
+    protocol: "{{ getv "/beats/dockbeat/monitoring/protocol" }}"
 
 
 

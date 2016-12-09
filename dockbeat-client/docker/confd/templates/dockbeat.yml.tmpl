@@ -7,7 +7,7 @@ dockbeat:
     ca_path: {{ getv "/beats/dockbeat/capath" }}
     cert_path: {{ getv "/beats/dockbeat/certpath" }}
     key_path: {{ getv "/beats/dockbeat/keypath" }}#
-  {{ endif }}
+  {{ end }}
 
   stats:
     container: true
@@ -20,5 +20,6 @@ output:
   elasticsearch:
     hosts: ["{{ getv "/beats/dockbeat/monitoring/host" }}"]
     protocol: "https"
+
 
 

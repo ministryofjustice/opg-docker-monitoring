@@ -1,7 +1,6 @@
 [template]
-prefix = "/beats"
-src = "docbeat.yml.tmpl"
+src = "dockbeat.yml.tmpl"
 dest = "/etc/dockbeat/dockbeat.yml"
 keys = [
-    "/dockbeat",
+    "/beats"
 ]

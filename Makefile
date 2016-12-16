@@ -1,30 +1,40 @@
 containers = grafana graphite-statsd logstash monitoring-proxy sensu sensu-api sensu-client sensu-server uchiwa
 
-currenttag := $(shell semvertag latest)
-newtag := $(shell semvertag bump patch)
-
-registryUrl ?= registry.service.opg.digital
-oldRegistryUrl ?= registry.service.dsd.io
-
 .PHONY: build push pull $(containers) clean showinfo
 
+tagrepo = no
+ifdef stage
+	stagearg := --stage $(stage)
+endif
+
+currenttag := $(shell semvertag latest $(stagearg))
+newtag := $(shell semvertag bump patch $(stagearg))
+
+
+registryUrl = registry.service.opg.digital
+oldRegistryUrl = registry.service.dsd.io
+
+
 build: $(containers)
-
-$(containers):
-	$(MAKE) -C $@ newtag=${newtag}
-
-push:
-	for i in $(containers); do \
-		docker push ${registryUrl}/opguk/$$i; \
-		docker push ${registryUrl}/opguk/$$i:${newtag}; \
-		docker push ${oldRegistryUrl}/opguk/$$i; \
-		docker push ${oldRegistryUrl}/opguk/$$i:${newtag}; \
-	done
 ifeq ($(tagrepo),yes)
 	semvertag tag $(newtag)
 else
 	@echo -e Not tagging repo
 endif
+
+$(containers):
+	$(MAKE) -C $@ newtag=${newtag} registryUrl=$(registryUrl)
+
+push:
+	for i in $(containers); do \
+	    [ "$(tagrepo)" = "yes" ] && docker push $(registryUrl)/opguk/$$i ; \
+		docker push ${registryUrl}/opguk/$$i:${newtag}; \
+	done
+
+	for i in $(containers); do \
+        [ "$(tagrepo)" = "yes" ] && docker push $(oldRegistryUrl)/opguk/$$i ; \
+        docker push ${oldRegistryUrl}/opguk/$$i:${newtag}; \
+    done
 
 pull:
 	for i in $(containers); do \

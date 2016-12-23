@@ -7,6 +7,10 @@ ifdef stage
 	stagearg := --stage $(stage)
 endif
 
+ifdef buildArgs
+	no-cache := --no-cache
+endif
+
 currenttag := $(shell semvertag latest $(stagearg))
 newtag := $(shell semvertag bump patch $(stagearg))
 
@@ -23,18 +27,18 @@ else
 endif
 
 $(containers):
-	$(MAKE) -C $@ newtag=${newtag} registryUrl=$(registryUrl)
+	$(MAKE) -C $@ newtag=${newtag} registryUrl=$(registryUrl) no-cache=$(no-cache)
 
 push:
 	for i in $(containers); do \
-	    [ "$(tagrepo)" = "yes" ] && docker push $(registryUrl)/opguk/$$i ; \
+		[ "$(tagrepo)" = "yes" ] && docker push $(registryUrl)/opguk/$$i ; \
 		docker push ${registryUrl}/opguk/$$i:${newtag}; \
 	done
 
 	for i in $(containers); do \
-        [ "$(tagrepo)" = "yes" ] && docker push $(oldRegistryUrl)/opguk/$$i ; \
-        docker push ${oldRegistryUrl}/opguk/$$i:${newtag}; \
-    done
+			[ "$(tagrepo)" = "yes" ] && docker push $(oldRegistryUrl)/opguk/$$i ; \
+			docker push ${oldRegistryUrl}/opguk/$$i:${newtag}; \
+		done
 
 pull:
 	for i in $(containers); do \

@@ -5,5 +5,20 @@
     - name: Setup branch vars
       set_fact:
         docker_image_base: "{{ tag_number | default('latest') }}"
+
+    - name: Checkout the opg-ansible-roles repo
+      git:
+        clone: yes
+        depth: 1
+        dest: "{{ playbook_dir }}/opg-ansible"
+        repo: "git@github.com:ministryofjustice/opg-ansible-roles.git"
+        version: "{{ opg_ansible_version | default('master') }}"
+
   roles:
     - { role: "parse-docker-files" }
+
+  post_tasks:
+    - name: Cleanup roles checkout
+      file:
+        state: absent
+        path: "{{ playbook_dir }}/opg-ansible"

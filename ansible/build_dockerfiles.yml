@@ -1,0 +1,9 @@
+---
+
+- hosts: localhost
+  pre_tasks:
+    - name: Setup branch vars
+      set_fact:
+        docker_image_base: "{{ tag_number | default('latest') }}"
+  roles:
+    - { role: "parse-docker-files" }

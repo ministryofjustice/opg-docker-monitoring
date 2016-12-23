@@ -1,0 +1,25 @@
+---
+
+- name: Check is directory
+  stat:
+    path: "../{{ target }}"
+  register: directory_exists
+  no_log: true
+
+- name: Set Dockerfile exists to false
+  set_fact:
+    docker_file_exists: False
+
+- block:
+    - name: Check Dockerfile exists
+      stat:
+        path: "../{{ target }}/Dockerfile"
+      register: docker_file_exists
+  when: directory_exists.stat is defined and directory_exists.stat.isdir
+
+- debug: msg="{{ docker_file_exists }}"
+- name:
+  template:
+    src: "../{{ target }}/Dockerfile.tmpl"
+    dest: "../{{ target }}/Dockerfile"
+  when: docker_file_exists.msg is not defined and docker_file_exists.stat is defined and docker_file_exists.stat.exists

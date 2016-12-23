@@ -1,4 +1,4 @@
 *~
 .idea/*
 venv/
-ansible/ansible-roles
+ansible/opg-ansible/

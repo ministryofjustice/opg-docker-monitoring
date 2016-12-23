@@ -1,4 +1,4 @@
-FROM registry.service.opg.digital/opguk/base:0.0.5-dev
+FROM registry.service.opg.digital/opguk/base:latest
 
 #ENV SENSU_VERSION 0.26.1-1
 

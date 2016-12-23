@@ -1,4 +1,4 @@
-FROM registry.service.opg.digital/opguk/base:0.0.5-dev
+FROM registry.service.opg.digital/opguk/base:latest
 
 ENV PYYAML_VERSION=3.12
 ENV DOCKER_BEATS_VERSION=v1.0.0

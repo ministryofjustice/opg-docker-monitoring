@@ -1,4 +1,4 @@
-FROM registry.service.opg.digital/opguk/base:0.0.5-dev
+FROM registry.service.opg.digital/opguk/base:latest
 
 RUN  apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 46095ACC8548582C1A2699A9D27D666CD88E42B4
 

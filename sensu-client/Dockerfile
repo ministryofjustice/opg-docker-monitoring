@@ -1,4 +1,4 @@
-FROM registry.service.opg.digital/opguk/sensu:0.0.5-dev
+FROM registry.service.opg.digital/opguk/sensu
 
 ENV SENSU_CLIENT_NAME localhost
 

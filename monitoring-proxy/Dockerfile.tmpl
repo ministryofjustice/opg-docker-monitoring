@@ -1,0 +1,63 @@
+FROM registry.service.opg.digital/opguk/base{{ ':' + docker_image_base  }}
+
+RUN  apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 46095ACC8548582C1A2699A9D27D666CD88E42B4
+
+ENV  LOGSTASH_MAJOR 1.4
+ENV  LOGSTASH_VERSION 1.4.2-1-2c0f5a1
+
+RUN  echo "deb http://packages.elasticsearch.org/logstash/${LOGSTASH_MAJOR}/debian stable main" > /etc/apt/sources.list.d/logstash.list
+
+RUN  apt-get update && apt-get -y upgrade && \
+     apt-get install -y --no-install-recommends logstash=$LOGSTASH_VERSION && \
+     apt-get install -y redis-server redis-tools && \
+     apt-get install -y python-dev && \
+     apt-get install -y collectd && \
+     apt-get clean && apt-get autoremove && \
+     rm -rf /var/lib/cache/* /var/lib/log/* /tmp/* /var/tmp/*
+
+#confd our
+ADD  docker/confd /etc/confd
+
+RUN  pip install bucky
+RUN  pip install setproctitle
+RUN  pip install raven
+RUN  pip install gunicorn
+
+ADD  docker/service/redis /etc/sv/redis
+RUN  chmod a+x /etc/sv/redis/run
+RUN ln -s /etc/sv/redis /etc/service/
+
+ADD  docker/redis /etc/redis
+RUN  mkdir -p /data/redis && chown -R redis /data/redis
+RUN  mkdir -p /var/run/redis && chown -R redis /var/run/redis
+RUN  mkdir -p /var/log/redis && chown -R redis /var/log/redis
+
+ADD  docker/service/logstash /etc/sv/logstash
+RUN  chmod a+x /etc/sv/logstash/run
+RUN ln -s /etc/sv/logstash /etc/service/
+
+RUN  useradd bucky
+RUN  mkdir -p /var/lib/bucky && chown -R bucky:bucky /var/lib/bucky
+
+RUN  mkdir -p /etc/bucky
+
+ADD  docker/service/bucky /etc/sv/bucky
+RUN  chmod a+x /etc/sv/bucky/run
+RUN ln -s /etc/sv/bucky /etc/service/
+
+VOLUME /data
+
+#syslog
+EXPOSE 2514
+EXPOSE 2514/udp
+
+#statsd
+EXPOSE 8125/udp
+
+#redis input queue
+EXPOSE 6379
+
+#collectd entry
+EXPOSE 25826
+
+ENV OPG_SERVICE monitoring-proxy

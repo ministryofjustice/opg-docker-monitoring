@@ -1,4 +1,4 @@
-FROM registry.service.opg.digital/opguk/base
+FROM registry.service.opg.digital/opguk/base:0.0.9-dev
 
 RUN  apt-get update && apt-get -y upgrade && \
      apt-get install -y collectd && \

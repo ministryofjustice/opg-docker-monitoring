@@ -1,4 +1,4 @@
-FROM registry.service.opg.digital/opguk/sensu
+FROM registry.service.opg.digital/opguk/sensu:0.0.9-dev
 
 ENV SENSU_REDIS_HOST redis
 ENV SENSU_REDIS_PORT 6379

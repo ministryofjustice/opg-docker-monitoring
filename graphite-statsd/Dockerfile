@@ -1,4 +1,4 @@
-FROM hopsoft/graphite-statsd:0.0.9-dev
+FROM hopsoft/graphite-statsd
 
 ADD  docker/graphite /opt/graphite
 ADD docker/statsd /opt/statsd

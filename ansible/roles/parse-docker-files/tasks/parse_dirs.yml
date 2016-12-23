@@ -11,9 +11,9 @@
     docker_file_exists: False
 
 - block:
-    - name: Check Dockerfile exists
+    - name: Check Dockerfile.tmpl exists
       stat:
-        path: "../{{ target }}/Dockerfile"
+        path: "../{{ target }}/Dockerfile.tmpl"
       register: docker_file_exists
   when: directory_exists.stat is defined and directory_exists.stat.isdir
 

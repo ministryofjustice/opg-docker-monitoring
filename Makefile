@@ -20,29 +20,31 @@ oldRegistryUrl = registry.service.dsd.io
 
 
 build: $(containers)
-ifeq ($(tagrepo),yes)
-	semvertag tag $(newtag)
-else
-	@echo -e Not tagging repo
-endif
 
 $(containers):
-	$(MAKE) -C $@ newtag=${newtag} registryUrl=$(registryUrl) no-cache=$(no-cache)
+	$(MAKE) -C $@ newtag=$(newtag) registryUrl=$(registryUrl) no-cache=$(no-cache)
 
 push:
 	for i in $(containers); do \
 		[ "$(tagrepo)" = "yes" ] && docker push $(registryUrl)/opguk/$$i ; \
-		docker push ${registryUrl}/opguk/$$i:${newtag}; \
+		docker push $(registryUrl)/opguk/$$i:$(newtag); \
 	done
 
+	ifeq ($(tagrepo),yes)
+		@echo -e Tagging repo
+		semvertag tag $(newtag)
+	else
+		@echo -e Not tagging repo
+	endif
+
 	for i in $(containers); do \
-			[ "$(tagrepo)" = "yes" ] && docker push $(oldRegistryUrl)/opguk/$$i ; \
-			docker push ${oldRegistryUrl}/opguk/$$i:${newtag}; \
-		done
+		[ "$(tagrepo)" = "yes" ] && docker push $(oldRegistryUrl)/opguk/$$i ; \
+		docker push $(oldRegistryUrl)/opguk/$$i:$(newtag); \
+	done
 
 pull:
 	for i in $(containers); do \
-		docker pull ${registryUrl}/opguk/$$i:${currenttag}; \
+		docker pull $(registryUrl)/opguk/$$i:$(currenttag); \
 	done
 
 clean:
@@ -61,6 +63,5 @@ showinfo:
 ifeq ($(tagrepo),yes)
 	@echo Tagging repo: $(tagrepo)
 endif
-
 
 all: showinfo build push clean

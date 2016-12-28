@@ -1,4 +1,4 @@
-FROM registry.service.opg.digital/opguk/base:latest
+FROM registry.service.opg.digital/opguk/base{{ ':' + docker_image_base  }}
 
 ENV PYYAML_VERSION=3.12
 ENV DOCKER_BEATS_VERSION=v1.0.0

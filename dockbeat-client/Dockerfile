@@ -38,6 +38,9 @@ RUN cd /tmp && \
 RUN mkdir -p /etc/dockbeat/ \
     && cp $GOPATH/src/github.com/ingensi/dockbeat/dockbeat /usr/local/bin/dockbeat
 
+ADD docker/my_init.d /etc/my_init.d
+RUN  chmod a+x /etc/my_init.d/*
+
 ADD docker/confd /etc/confd
 ADD docker/service/dockbeat /etc/sv/dockbeat
 RUN chmod -R a+x /etc/sv/dockbeat/run

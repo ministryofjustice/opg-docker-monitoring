@@ -30,12 +30,12 @@ push:
 		docker push $(registryUrl)/opguk/$$i:$(newtag); \
 	done
 
-	ifeq ("$(tagrepo)","yes")
+    ifeq ($(tagrepo),yes)
 		@echo -e Tagging repo
 		semvertag tag $(newtag)
-	else
+    else
 		@echo -e Not tagging repo
-	endif
+    endif
 
 	for i in $(containers); do \
 		[ "$(tagrepo)" = "yes" ] && docker push $(oldRegistryUrl)/opguk/$$i ; \

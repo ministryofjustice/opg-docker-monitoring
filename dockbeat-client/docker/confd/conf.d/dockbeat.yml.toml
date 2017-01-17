@@ -1,0 +1,6 @@
+[template]
+src = "dockbeat.yml.tmpl"
+dest = "/etc/dockbeat/dockbeat.yml"
+keys = [
+    "/beats"
+]

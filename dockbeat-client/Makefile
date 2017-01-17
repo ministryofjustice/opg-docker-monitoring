@@ -3,7 +3,7 @@
 registryUrl ?= registry.service.opg.digital
 oldRegistryUrl ?= registry.service.dsd.io
 
-image = opguk/sensu
+image = opguk/dockbeat-client
 
 build:
 	docker build $(no-cache) -t "$(registryUrl)/$(image)" .

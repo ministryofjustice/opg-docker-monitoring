@@ -153,14 +153,6 @@ example:
     - 8000:80
   env_file: ./env
 
-dockerbeats:
-  build: dockbeat-client
-  links:
-    - elasticsearch
-  env_file: ./env
-  volumes:
-    - "/var/run/docker.sock:/var/run/docker.sock"
-
 
 
 #example collectd feeder

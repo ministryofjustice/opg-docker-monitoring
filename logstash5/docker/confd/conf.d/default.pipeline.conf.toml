@@ -1,0 +1,6 @@
+[template]
+src = "default.pipeline.conf.tmpl"
+dest = "/etc/logstash/conf.d/default.pipeline.yml"
+keys = [
+    "/opg/logstash",
+]

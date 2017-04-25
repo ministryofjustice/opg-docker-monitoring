@@ -1,0 +1,46 @@
+version: '2.1'
+
+services:
+  elasticsearch:
+    image: registry.service.opg.digital/opguk/elasticsearch5
+    ports:
+      - 9200
+      - 9300
+    env_file: ./env
+    volumes:
+      - /tmp/elasticsearchshareddata
+    volumes_from:
+      - elasticsearchshareddata
+    environment:
+      ELASTICSEARCH_CLUSTER_NAME: lgtest
+      ELASTICSEARCH_NODE_NAME: elasticsearch
+
+  elasticsearchshareddata:
+    image: registry.service.opg.digital/opguk/elasticsearch-shared-data
+
+  logstash:
+    image: registry.service.opg.digital/opguk/logstash5
+    ports:
+      - 2514:2514
+    links:
+      - redis
+      - elasticsearch
+    env_file: ./env
+
+
+  redis:
+    image: redis
+    ports:
+      - 6379
+    env_file: ./env
+
+  kibana:
+    image: registry.service.opg.digital/opguk/kibana
+    environment:
+      ELASTICSEARCH: elasticsearch
+      ELASTICSEARCH_PORT_9200_TCP: 9200
+    ports:
+      - 8001:5601
+    links:
+      - elasticsearch
+    env_file: ./env

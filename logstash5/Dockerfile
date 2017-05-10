@@ -1,10 +1,10 @@
 FROM registry.service.opg.digital/opguk/jre-8
 MAINTAINER OPG Webops Team <opguk@digital.justice.gov.uk>
 
-ARG ELASTIC_VERSION
+ARG ELASTIC_VERSION="1:5.2.2-1"
 ARG LOGSTASH_DOWNLOAD_URL
 ARG LOGSTASH_PACK_URL
-ARG PLUGIN_LIST
+ARG PLUGIN_LIST="logstash-input-beats syslog stdin tcp redis"
 
 RUN wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
 
@@ -13,7 +13,8 @@ ENV ELASTIC_REPO_BASE https://artifacts.elastic.co/packages/5.x/apt
 RUN echo "deb $ELASTIC_REPO_BASE stable main" > /etc/apt/sources.list.d/elastic.list
 
 RUN apt-get update \
-  && apt-get install logstash \
+  && apt-get install logstash=${ELASTIC_VERSION} \
+  && apt-get autoremove \
   && rm -rf /var/lib/apt/lists/*
 
 # Provide a minimal configuration, so that simple invocations will provide
@@ -30,7 +31,7 @@ RUN ln -s /etc/sv/logstash /etc/service/ && \
     chown  app:app /usr/share/logstash/data /var/lib/logstash
 
 
-# RUN cd /usr/share/logstash && LOGSTASH_PACK_URL=${LOGSTASH_PACK_URL} /usr/share/logstash/bin/logstash-plugin install ${PLUGIN_LIST}
+#RUN cd /usr/share/logstash && LOGSTASH_PACK_URL=${LOGSTASH_PACK_URL} /usr/share/logstash/bin/logstash-plugin install ${PLUGIN_LIST}
 
 EXPOSE 2514
 EXPOSE 2514/udp

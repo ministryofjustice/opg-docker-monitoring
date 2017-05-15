@@ -6,4 +6,4 @@ image = opguk/logstash5
 
 build:
 	docker build $(no-cache) -t "$(registryUrl)/$(image)" .
-	docker tag -f "$(registryUrl)/$(image)" "$(registryUrl)/$(image):$(newtag)"
+	docker tag "$(registryUrl)/$(image)" "$(registryUrl)/$(image):$(newtag)"

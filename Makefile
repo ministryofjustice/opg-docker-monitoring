@@ -1,4 +1,4 @@
-CONTAINERS = grafana graphite-statsd monitoring-proxy sensu sensu-api sensu-client sensu-server uchiwa logstash5
+CONTAINERS = grafana graphite-statsd sensu sensu-api sensu-client sensu-server uchiwa logstash5
 
 .PHONY: build push pull $(CONTAINERS) clean showinfo
 

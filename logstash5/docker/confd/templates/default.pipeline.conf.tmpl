@@ -3,18 +3,10 @@ input {
     tcp {
         port => 2514
         type => syslog
-        codec => multiline {
-            pattern => "^\s"
-            what => "previous"
-        }
     }
     udp {
         port => 2514
         type => syslog
-        codec => multiline {
-            pattern => "^\s"
-            what => "previous"
-        }
     }
     redis {
         host => 'redis'

@@ -16,8 +16,6 @@ newtag := $(shell semvertag bump patch $(stagearg))
 
 
 registryUrl = registry.service.opg.digital
-oldRegistryUrl = registry.service.dsd.io
-
 
 build: $(CONTAINERS)
 
@@ -35,12 +33,6 @@ ifeq ($(tagrepo),yes)
 else
 	@echo -e Not tagging repo
 endif
-	#push to old registry
-	for i in $(CONTAINERS); do \
-			[ "$(stagearg)x" = "x" ] && docker push $(oldRegistryUrl)/opguk/$$i ; \
-			docker push $(oldRegistryUrl)/opguk/$$i:$(newtag) ; \
-	done
-
 
 pull:
 	for i in $(CONTAINERS); do \
@@ -50,8 +42,6 @@ pull:
 clean:
 	for i in $(CONTAINERS); do \
 		docker rmi $(registryUrl)/opguk/$$i:$(newtag) || true ; \
-		docker rmi $(oldRegistryUrl)/opguk/$$i:$(newtag) || true ; \
-		docker rmi $(oldRegistryUrl)/opguk/$$i || true ; \
 		docker rmi $(registryUrl)/opguk/$$i || true ; \
 	done
 

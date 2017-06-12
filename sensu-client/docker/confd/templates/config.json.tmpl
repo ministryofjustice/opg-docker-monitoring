@@ -1,20 +1,13 @@
 {
-    "client": {
-        "name": "{{getv "/client/name"}}",
-        "metric_prefix": "{{getv "/client/metric/prefix"}}",
-        "address": "127.0.0.1",
-        "socket": {
-            "bind": "0.0.0.0"
-        },
-        "subscriptions": [ "all" ],
-        "graphite_check_cmd": "{{getv "/client/graphite/check/cmd"}}",
-        "graphite_check_host": "{{getv "/client/graphite/check/host"}}",
-        "transport": "redis"
-
+  "client": {
+    "name": "{{getv "/client/name"}}",
+    "metric_prefix": "{{getv "/client/metric/prefix"}}",
+    "address": "127.0.0.1",
+    "socket": {
+      "bind": "0.0.0.0"
     },
-    "redis": {
-        "host": "{{ getv "/redis/host" }}",
-        "port": {{ getv "/redis/port" }},
-        "db": {{ getv "/redis/db" }}
-    }
+    "subscriptions": [ "all" ],
+    "graphite_check_cmd": "{{getv "/client/graphite/check/cmd"}}",
+    "graphite_check_host": "{{getv "/client/graphite/check/host"}}"
+  }
 }

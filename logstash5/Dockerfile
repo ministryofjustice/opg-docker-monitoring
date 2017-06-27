@@ -13,7 +13,7 @@ ENV ELASTIC_REPO_BASE https://artifacts.elastic.co/packages/5.x/apt
 RUN echo "deb $ELASTIC_REPO_BASE stable main" > /etc/apt/sources.list.d/elastic.list
 
 RUN apt-get update \
-  && apt-get install logstash=${ELASTIC_VERSION} \
+  && apt-get -y install logstash=${ELASTIC_VERSION} \
   && apt-get autoremove \
   && rm -rf /var/lib/apt/lists/*
 
@@ -29,7 +29,7 @@ ADD  docker/service/logstash /etc/sv/logstash
 RUN  chmod a+x /etc/sv/logstash/run
 RUN ln -s /etc/sv/logstash /etc/service/ && \
     chown  app:app /usr/share/logstash/data /var/lib/logstash
-
+COPY docker/logstash-template-es5.json  /usr/share/logstash/
 
 #RUN cd /usr/share/logstash && LOGSTASH_PACK_URL=${LOGSTASH_PACK_URL} /usr/share/logstash/bin/logstash-plugin install ${PLUGIN_LIST}
 

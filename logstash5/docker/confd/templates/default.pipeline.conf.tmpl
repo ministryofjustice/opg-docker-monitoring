@@ -10,9 +10,10 @@ input {
     }
     redis {
         host => 'redis'
-        data_type => list
+        data_type => 'list'
         key => 'logstash'
-        type => 'logstash'
+        type => 'application'
+        codec => 'json'
     }
     beats {
       port => 5044
@@ -20,18 +21,32 @@ input {
 }
 
 # 200_filter_all
-#filter {
+filter {
+ if [type] == "application" {
+       mutate {
+           rename => { "@fields" => "@metadata" }
+           add_tag => [ 'checkedhere' ]
+      }
+      mutate {
+           remove_field => "message"
+      }
+ }
 
-#}
 
-# 900_output_elasticsearch
+}
+
+#
+{{$output_es := (getenv "LOGSTASH_OUTPUT_ELASTICSEARCH") "no"}}
 output {
+{{if eq "yes" $output_es }}
     elasticsearch {
+        template => '/usr/share/logstash/logstash-template-es5.json'
         hosts => [
           {{if exists "/opg/logstash/elasticsearch/hostport" }}"{{ getv "/opg/logstash/elasticsearch/hostport" }}"{{else}}"elasticsearch:9200"{{end}}
         ]
         ssl => {{if exists "/opg/logstash/elasticsearch/ssl/enabled" }}{{ getv "/opg/logstash/elasticsearch/ssl/enabled" }}{{else}}false{{end}}
         ssl_certificate_verification => {{if exists "/opg/logstash/elasticsearch/ssl/certificate/verification" }}{{ getv "/opg/logstash/elasticsearch/ssl/certificate/verification" }}{{else}}false{{end}}
     }
+{{end}}
     stdout { codec => rubydebug }
 }

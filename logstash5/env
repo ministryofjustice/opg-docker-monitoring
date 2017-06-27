@@ -8,4 +8,4 @@ SHARED_DATA_BASE=/tmp
 SHARED_DATA_PATHS="['/elasticsearchshareddata/beats']"
 DASHBOARD_SLEEP_TIMEOUT=90
 
-OPG_LOGSTASH_DEBUG: true
+OPG_LOGSTASH_DEBUG: false

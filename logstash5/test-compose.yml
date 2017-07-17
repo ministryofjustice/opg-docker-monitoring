@@ -25,6 +25,8 @@ services:
     links:
       - redis
       - elasticsearch
+    volumes:
+      - ./pipelines:/etc/logstash/conf.d/
     environment:
       LOGSTASH_OUTPUT_ELASTICSEARCH: "yes"
 
@@ -35,13 +37,13 @@ services:
       - 6379:6379
     env_file: ./env
 
-#  kibana:
-#    image: registry.service.opg.digital/opguk/kibana
-#    environment:
-#      ELASTICSEARCH: elasticsearch
-#      ELASTICSEARCH_PORT_9200_TCP: 9200
-#    ports:
-#      - 8001:5601
-#    links:
-#      - elasticsearch
-#    env_file: ./env
+  kibana:
+    image: registry.service.opg.digital/opguk/kibana
+    environment:
+      ELASTICSEARCH: elasticsearch
+      ELASTICSEARCH_PORT_9200_TCP: 9200
+    ports:
+      - 8001:5601
+    links:
+      - elasticsearch
+    env_file: ./env

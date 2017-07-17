@@ -4,7 +4,7 @@ MAINTAINER OPG Webops Team <opguk@digital.justice.gov.uk>
 ARG ELASTIC_VERSION="1:5.2.2-1"
 ARG LOGSTASH_DOWNLOAD_URL
 ARG LOGSTASH_PACK_URL
-ARG PLUGIN_LIST="logstash-input-beats syslog stdin tcp redis"
+ARG PLUGIN_LIST="logstash-input-beats syslog stdin tcp redis logstash-filter-prune"
 
 RUN wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
 

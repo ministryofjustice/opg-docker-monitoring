@@ -22,16 +22,6 @@ input {
 
 # 200_filter_all
 filter {
- if [type] == "application" {
-       mutate {
-           rename => { "@fields" => "@metadata" }
-           add_tag => [ 'checkedhere' ]
-      }
-      mutate {
-           remove_field => "message"
-      }
- }
-
 
 }
 

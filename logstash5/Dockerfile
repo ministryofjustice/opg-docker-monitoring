@@ -1,7 +1,7 @@
 FROM registry.service.opg.digital/opguk/jre-8
 MAINTAINER OPG Webops Team <opguk@digital.justice.gov.uk>
 
-ARG ARG ES_VERSION=5.3.0
+ARG ES_VERSION=1:5.3.0-1
 ARG LOGSTASH_DOWNLOAD_URL
 ARG LOGSTASH_PACK_URL
 ARG PLUGIN_LIST="logstash-input-beats syslog stdin tcp redis logstash-filter-prune"

@@ -1,7 +1,7 @@
 FROM registry.service.opg.digital/opguk/jre-8
 MAINTAINER OPG Webops Team <opguk@digital.justice.gov.uk>
 
-ARG ELASTIC_VERSION="1:5.2.2-1"
+ARG ARG ES_VERSION=5.3.0
 ARG LOGSTASH_DOWNLOAD_URL
 ARG LOGSTASH_PACK_URL
 ARG PLUGIN_LIST="logstash-input-beats syslog stdin tcp redis logstash-filter-prune"
@@ -13,7 +13,7 @@ ENV ELASTIC_REPO_BASE https://artifacts.elastic.co/packages/5.x/apt
 RUN echo "deb $ELASTIC_REPO_BASE stable main" > /etc/apt/sources.list.d/elastic.list
 
 RUN apt-get update \
-  && apt-get -y install logstash=${ELASTIC_VERSION} \
+  && apt-get -y install logstash=${ES_VERSION} \
   && apt-get autoremove \
   && rm -rf /var/lib/apt/lists/*
 

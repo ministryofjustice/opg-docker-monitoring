@@ -29,7 +29,7 @@ ADD  docker/service/logstash /etc/sv/logstash
 RUN  chmod a+x /etc/sv/logstash/run
 RUN ln -s /etc/sv/logstash /etc/service/ && \
     chown  app:app /usr/share/logstash/data /var/lib/logstash
-COPY docker/logstash-template-es5.json  /usr/share/logstash/
+
 
 #RUN cd /usr/share/logstash && LOGSTASH_PACK_URL=${LOGSTASH_PACK_URL} /usr/share/logstash/bin/logstash-plugin install ${PLUGIN_LIST}
 

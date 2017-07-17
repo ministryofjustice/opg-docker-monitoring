@@ -28,7 +28,7 @@ filter {
 #
 {{$output_es := (getenv "LOGSTASH_OUTPUT_ELASTICSEARCH") "no"}}
 output {
-{{if eq "yes" $output_es }}
+{{if ne "no" $output_es }}
     elasticsearch {
         template => '/usr/share/logstash/logstash-template-es5.json'
         hosts => [

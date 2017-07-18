@@ -30,7 +30,6 @@ filter {
 output {
 {{if ne "no" $output_es }}
     elasticsearch {
-        template => '/usr/share/logstash/logstash-template-es5.json'
         hosts => [
           {{if exists "/opg/logstash/elasticsearch/hostport" }}"{{ getv "/opg/logstash/elasticsearch/hostport" }}"{{else}}"elasticsearch:9200"{{end}}
         ]

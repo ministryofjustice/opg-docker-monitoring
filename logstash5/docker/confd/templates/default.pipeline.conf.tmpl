@@ -15,9 +15,6 @@ input {
         type => 'application'
         codec => 'json'
     }
-    beats {
-      port => 5044
-    }
 }
 
 # 200_filter_all
@@ -37,5 +34,4 @@ output {
         ssl_certificate_verification => {{if exists "/opg/logstash/elasticsearch/ssl/certificate/verification" }}{{ getv "/opg/logstash/elasticsearch/ssl/certificate/verification" }}{{else}}false{{end}}
     }
 {{end}}
-    stdout { codec => rubydebug }
 }

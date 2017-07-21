@@ -1,16 +1,16 @@
 node.name: logstash
 
 path.data: /var/lib/logstash
-# pipeline.workers: 2
-# pipeline.output.workers: 1
+pipeline.workers: 3
+pipeline.output.workers: 2
 # pipeline.batch.size: 125
 # pipeline.batch.delay: 5
 # pipeline.unsafe_shutdown: false
 path.config: /etc/logstash/conf.d
 # config.string:
 # config.test_and_exit: false
-# config.reload.automatic: false
-# config.reload.interval: 3
+config.reload.automatic: true
+config.reload.interval: 10
 # config.debug: false
 # queue.type: memory
 # path.queue:

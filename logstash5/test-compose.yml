@@ -7,19 +7,12 @@ services:
       - 9200:9200
       - 9300:9300
     env_file: ./env
-#    volumes:
-#      - /tmp/elasticsearchshareddata
-#    volumes_from:
-#      - elasticsearchshareddata
     environment:
       ELASTICSEARCH_CLUSTER_NAME: lgtest
       ELASTICSEARCH_NODE_NAME: elasticsearch
 
-#  elasticsearchshareddata:
-#    image: registry.service.opg.digital/opguk/elasticsearch-shared-data
-
   logstash:
-    image: registry.service.opg.digital/opguk/logstash5
+    image: registry.service.opg.digital/opguk/logstash5:123
     ports:
       - 2514:2514
     links:
@@ -29,7 +22,6 @@ services:
       - ./pipelines:/etc/logstash/conf.d/
     environment:
       LOGSTASH_OUTPUT_ELASTICSEARCH: "yes"
-
 
   redis:
     image: redis

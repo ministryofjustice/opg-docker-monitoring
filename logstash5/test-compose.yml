@@ -12,7 +12,7 @@ services:
       ELASTICSEARCH_NODE_NAME: elasticsearch
 
   logstash:
-    image: registry.service.opg.digital/opguk/logstash5:123
+    image: registry.service.opg.digital/opguk/logstash5
     ports:
       - 2514:2514
     links:

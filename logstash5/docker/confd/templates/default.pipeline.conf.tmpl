@@ -1,4 +1,5 @@
 # 100_input_syslog
+
 input {
     tcp {
         port => 2514
@@ -9,7 +10,7 @@ input {
         type => syslog
     }
     redis {
-        host => 'redis'
+        host => {{ if exists "/opg/logstash/input/redis/host"}}'{{getv "/opg/logstash/input/redis/host"}}'{{else}}'redis'{{end}}
         data_type => 'list'
         key => 'logstash'
         type => 'application'

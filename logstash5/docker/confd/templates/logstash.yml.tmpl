@@ -1,0 +1,31 @@
+node.name: logstash
+
+path.data: /var/lib/logstash
+pipeline.workers: 3
+pipeline.output.workers: 2
+# pipeline.batch.size: 125
+# pipeline.batch.delay: 5
+# pipeline.unsafe_shutdown: false
+path.config: /etc/logstash/conf.d
+# config.string:
+# config.test_and_exit: false
+config.reload.automatic: true
+config.reload.interval: 10
+# config.debug: false
+# queue.type: memory
+# path.queue:
+# queue.page_capacity: 250mb
+# queue.max_events: 0
+# queue.max_bytes: 1024mb
+# queue.checkpoint.acks: 1024
+# queue.checkpoint.writes: 1024
+# queue.checkpoint.interval: 1000
+#
+# ------------ Metrics Settings --------------
+#
+# http.host: "127.0.0.1"
+# http.port: 9600-9700
+
+log.level: {{if exists "/opg/logstash/debug" }}debug{{else}}info{{end}}
+path.logs: /var/log/logstash
+# path.plugins: []

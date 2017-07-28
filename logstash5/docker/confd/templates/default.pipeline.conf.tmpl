@@ -1,0 +1,38 @@
+# 100_input_syslog
+
+input {
+    tcp {
+        port => 2514
+        type => syslog
+    }
+    udp {
+        port => 2514
+        type => syslog
+    }
+    redis {
+        host => {{ if exists "/opg/logstash/input/redis/host"}}'{{getv "/opg/logstash/input/redis/host"}}'{{else}}'redis'{{end}}
+        data_type => 'list'
+        key => 'logstash'
+        type => 'application'
+        codec => 'json'
+    }
+}
+
+# 200_filter_all
+filter {
+
+}
+
+#
+{{$output_es := (getenv "LOGSTASH_OUTPUT_ELASTICSEARCH") "no"}}
+output {
+{{if ne "no" $output_es }}
+    elasticsearch {
+        hosts => [
+          {{if exists "/opg/logstash/elasticsearch/hostport" }}"{{ getv "/opg/logstash/elasticsearch/hostport" }}"{{else}}"elasticsearch:9200"{{end}}
+        ]
+        ssl => {{if exists "/opg/logstash/elasticsearch/ssl/enabled" }}{{ getv "/opg/logstash/elasticsearch/ssl/enabled" }}{{else}}false{{end}}
+        ssl_certificate_verification => {{if exists "/opg/logstash/elasticsearch/ssl/certificate/verification" }}{{ getv "/opg/logstash/elasticsearch/ssl/certificate/verification" }}{{else}}false{{end}}
+    }
+{{end}}
+}

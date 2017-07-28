@@ -2,3 +2,4 @@
 .idea/*
 venv/
 ansible/opg-ansible/
+/logstash5/test/

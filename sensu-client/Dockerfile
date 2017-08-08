@@ -13,4 +13,6 @@ ADD docker/service/sensu-client /etc/sv/sensu-client
 RUN chmod a+x /etc/sv/sensu-client/run
 RUN ln -s /etc/sv/sensu-client /etc/service/
 
+RUN pip install sensu_plugin boto3
+
 ENV OPG_SERVICE sensu-client

@@ -34,7 +34,7 @@ class S3EncryptedBucketCheck(SensuPluginCheck):
         stringdata.write = "S3EncryptedBucketCheck marker created at {}"\
             .format(now)
 
-        # Try to upload as encypted file.
+        # Try to upload as encrypted file.
         try:
             encrypted_obj.put(
                 Body=stringdata,
@@ -43,7 +43,7 @@ class S3EncryptedBucketCheck(SensuPluginCheck):
         except botocore.exceptions.ClientError:
             self.critical("Can not upload encrypted file.")
 
-        # Try to upload as unencypted file.
+        # Try to upload as unencrypted file.
         # We expect this to fail.
         uploaded_unencrypted_file = True
         try:

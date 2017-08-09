@@ -45,6 +45,7 @@ class S3EncryptedBucketCheck(SensuPluginCheck):
 
         # Try to upload as unencypted file.
         # We expect this to fail.
+        uploaded_unencrypted_file = True
         try:
             unencrypted_obj.put(
                 Body=stringdata,

@@ -1,4 +1,4 @@
-#! /usr/bin/env ruby
+#!/opt/sensu/embedded/bin/ruby
 #
 # TODO: remove after
 #  https://github.com/sensu-plugins/sensu-plugins-beanstalk/pull/5

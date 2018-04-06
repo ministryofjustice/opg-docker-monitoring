@@ -53,6 +53,12 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
           :long => '--critical VALUE',
           :proc => proc { |arg| arg.to_i }
 
+  option  :invert,
+          :description => 'Invert behaviour so warn/critical on the values lower than the threshold',
+          :short => '-i',
+          :long => '--invert',
+          :default => FALSE
+
   DEFAULT_SIZE=1
 
   def _query_resource(resource, query, range)
@@ -142,12 +148,25 @@ query_data = {
       out = "#{config[:check]} #{count} records matched"
     end
 
-    if config[:critical] != nil && count >= config[:critical]
-      critical "#{out} is above the CRITICAL limit: #{count} count / #{config[:critical]} limit"
-    elsif config[:warning] != nil && count >= config[:warning]
-      warning "#{out} is above the WARNING limit: #{count} count / #{config[:warning]} limit"
+    # run inverted?
+    if config[:invert] === TRUE
+      # inverted run
+      if config[:critical] != nil && count <= config[:critical]
+        critical "#{out} is below the CRITICAL limit: #{count} count / #{config[:critical]} limit"
+      elsif config[:warning] != nil && count <= config[:warning]
+        warning "#{out} is below the WARNING limit: #{count} count / #{config[:warning]} limit"
+      else
+        ok out
+      end
     else
-      ok out
+      # Normal run
+      if config[:critical] != nil && count >= config[:critical]
+        critical "#{out} is above the CRITICAL limit: #{count} count / #{config[:critical]} limit"
+      elsif config[:warning] != nil && count >= config[:warning]
+        warning "#{out} is above the WARNING limit: #{count} count / #{config[:warning]} limit"
+      else
+        ok out
+      end
     end
   end
 

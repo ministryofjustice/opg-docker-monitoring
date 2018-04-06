@@ -11,7 +11,7 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
   # These options apply to both check styles
   option  :es_proto, :short => '-o HTTP(S)', :long => '--es-proto HTTP(S)',
           :default => 'http'
-  option  :es_host, :short => '-h ES_HOST', :long => '--es-host ES_HOST', 
+  option  :es_host, :short => '-h ES_HOST', :long => '--es-host ES_HOST',
           :default => 'localhost'
   option  :es_port, :short => '-p ES_PORT', :long => '--es-port ES_PORT',
           :default => '9200'
@@ -56,18 +56,13 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
   DEFAULT_SIZE=1
 
   def _query_resource(resource, query, range)
-    query_data = {
-      'query' => {
-        'filtered' => {
-          'query' => {
-            'bool' => {
-              'should' => [
-                {
-                  'query_string' =>  {
-                    'query' => query
-                  }
-                }
-              ]
+
+query_data = {
+      'query': {
+        'bool': {
+          'must': {
+            'match': {
+              '_all': query
             }
           },
           'filter' => {

@@ -11,7 +11,7 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
   # These options apply to both check styles
   option  :es_proto, :short => '-o HTTP(S)', :long => '--es-proto HTTP(S)',
           :default => 'http'
-  option  :es_host, :short => '-h ES_HOST', :long => '--es-host ES_HOST', 
+  option  :es_host, :short => '-h ES_HOST', :long => '--es-host ES_HOST',
           :default => 'localhost'
   option  :es_port, :short => '-p ES_PORT', :long => '--es-port ES_PORT',
           :default => '9200'
@@ -53,39 +53,40 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
           :long => '--critical VALUE',
           :proc => proc { |arg| arg.to_i }
 
+  option  :invert,
+          :description => 'Invert behaviour so warn/critical on the values lower than the threshold',
+          :short => '-i',
+          :long => '--invert',
+          :default => FALSE
+
   DEFAULT_SIZE=1
 
   def _query_resource(resource, query, range)
-    query_data = {
-      'query' => {
-        'filtered' => {
-          'query' => {
-            'bool' => {
-              'should' => [
-                {
-                  'query_string' =>  {
-                    'query' => query
-                  }
-                }
-              ]
-            }
-          },
-          'filter' => {
-            'bool' => {
-              'must' => [
-                {
-                  'range'=> {
-                    '@timestamp' => {
-                      'gt' => "now-#{range}"
+
+  query_data = {
+        'query' => {
+          'bool' =>{
+            'must' => {
+              'match' => {
+                '_all' => query
+              }
+            },
+            'filter' => {
+              'bool' => {
+                'must' => [
+                  {
+                    'range'=> {
+                      '@timestamp' => {
+                        'gt' => "now-#{range}"
+                      }
                     }
                   }
-                }
-              ]
+                ]
+              }
             }
           }
         }
       }
-    }
 
     url = "#{config[:es_proto]}://#{config[:es_host]}:#{config[:es_port]}/#{resource}"
     r = RestClient.post url, JSON.generate(query_data),
@@ -147,12 +148,25 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
       out = "#{config[:check]} #{count} records matched"
     end
 
-    if config[:critical] != nil && count >= config[:critical]
-      critical "#{out} is above the CRITICAL limit: #{count} count / #{config[:critical]} limit"
-    elsif config[:warning] != nil && count >= config[:warning]
-      warning "#{out} is above the WARNING limit: #{count} count / #{config[:warning]} limit"
+    # run inverted?
+    if config[:invert] === TRUE
+      # inverted run
+      if config[:critical] != nil && count <= config[:critical]
+        critical "#{out} is below the CRITICAL limit: #{count} count / #{config[:critical]} limit"
+      elsif config[:warning] != nil && count <= config[:warning]
+        warning "#{out} is below the WARNING limit: #{count} count / #{config[:warning]} limit"
+      else
+        ok out
+      end
     else
-      ok out
+      # Normal run
+      if config[:critical] != nil && count >= config[:critical]
+        critical "#{out} is above the CRITICAL limit: #{count} count / #{config[:critical]} limit"
+      elsif config[:warning] != nil && count >= config[:warning]
+        warning "#{out} is above the WARNING limit: #{count} count / #{config[:warning]} limit"
+      else
+        ok out
+      end
     end
   end
 
@@ -162,7 +176,7 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
   # problem is solved.
   def run_result_check
     data = get_data
-    hits =  data['hits']['total']
+    hits = data['hits']['total']
     err = 0
     success = 0
     if hits > 0
@@ -177,7 +191,8 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
           out = "Check host for ES query string: #{config[:query]}"
         end
         msg = JSON.generate({ 'name' => "#{config[:prefix]}_#{hostname}",
-          'status' => 2, 'output' => out,
+          'status'  => 2,
+          'output'  => out,
           'handler' => config[:handler] })
         res = submit_alert(msg)
 
@@ -189,7 +204,7 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
       end
       if err > 0 and success == 0
         critical "Failed to submit query results"
-      elsif err >0 and success > 0
+      elsif err > 0 and success > 0
         warning "Failed to submit #{err} results. Successful submissions: #{success}"
       else
         ok "#{success} results submitted"

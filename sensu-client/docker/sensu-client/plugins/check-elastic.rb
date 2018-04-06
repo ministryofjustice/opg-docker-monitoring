@@ -63,30 +63,30 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
 
   def _query_resource(resource, query, range)
 
-query_data = {
-      'query': {
-        'bool': {
-          'must': {
-            'match': {
-              '_all': query
-            }
-          },
-          'filter' => {
-            'bool' => {
-              'must' => [
-                {
-                  'range'=> {
-                    '@timestamp' => {
-                      'gt' => "now-#{range}"
+  query_data = {
+        'query' => {
+          'bool' =>{
+            'must' => {
+              'match' => {
+                '_all' => query
+              }
+            },
+            'filter' => {
+              'bool' => {
+                'must' => [
+                  {
+                    'range'=> {
+                      '@timestamp' => {
+                        'gt' => "now-#{range}"
+                      }
                     }
                   }
-                }
-              ]
+                ]
+              }
             }
           }
         }
       }
-    }
 
     url = "#{config[:es_proto]}://#{config[:es_host]}:#{config[:es_port]}/#{resource}"
     r = RestClient.post url, JSON.generate(query_data),
@@ -176,7 +176,7 @@ query_data = {
   # problem is solved.
   def run_result_check
     data = get_data
-    hits =  data['hits']['total']
+    hits = data['hits']['total']
     err = 0
     success = 0
     if hits > 0
@@ -191,7 +191,8 @@ query_data = {
           out = "Check host for ES query string: #{config[:query]}"
         end
         msg = JSON.generate({ 'name' => "#{config[:prefix]}_#{hostname}",
-          'status' => 2, 'output' => out,
+          'status'  => 2,
+          'output'  => out,
           'handler' => config[:handler] })
         res = submit_alert(msg)
 
@@ -203,7 +204,7 @@ query_data = {
       end
       if err > 0 and success == 0
         critical "Failed to submit query results"
-      elsif err >0 and success > 0
+      elsif err > 0 and success > 0
         warning "Failed to submit #{err} results. Successful submissions: #{success}"
       else
         ok "#{success} results submitted"

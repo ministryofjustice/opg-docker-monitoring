@@ -59,13 +59,30 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
           :long => '--invert',
           :default => FALSE
 
+  option  :tags,
+          :description => 'Filter by tag, normally the environment.',
+          :short => '-t tags',
+          :long => '--tags tags'
+
+
+
   DEFAULT_SIZE=1
 
-  def _query_resource(resource, query, range)
+  def _query_resource(resource, query, range, tags)
+
+  if tags
+    tag_data = {
+                 'term' => {
+                   'tags' => tags
+                 }
+               }
+  else
+    tag_data =  {}
+  end
 
   query_data = {
         'query' => {
-          'bool' =>{
+          'bool' => {
             'must' => {
               'match' => {
                 '_all' => query
@@ -75,12 +92,13 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
               'bool' => {
                 'must' => [
                   {
-                    'range'=> {
+                    'range' => {
                       '@timestamp' => {
                         'gt' => "now-#{range}"
                       }
                     }
-                  }
+                  },
+                  tag_data
                 ]
               }
             }
@@ -97,13 +115,13 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
   def get_data(size=DEFAULT_SIZE)
     today = Time.now.strftime('%Y.%m.%d')
     resource = "logstash-#{today}/_search?pretty&size=#{size}"
-    _query_resource(resource, config[:query], config[:range])
+    _query_resource(resource, config[:query], config[:range], config[:tags])
   end
 
   def get_count()
     today = Time.now.strftime('%Y.%m.%d')
     resource = "logstash-#{today}/_count?pretty"
-    _query_resource(resource, config[:query], config[:range])
+    _query_resource(resource, config[:query], config[:range], config[:tags])
   end
 
 

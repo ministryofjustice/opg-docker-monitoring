@@ -84,7 +84,7 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
         'query' => {
           'bool' => {
             'must' => {
-              'match' => {
+              'match_phrase' => {
                 '_all' => query
               }
             },
